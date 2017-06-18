@@ -1,0 +1,63 @@
+body {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #333;
+	background-color: #fff;
+	padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+a {
+	text-decoration: none !important;
+}
+
+.header {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 30px;
+}
+
+.header h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+    /*text-decoration: none;*/
+    background-color: white !important;
+}
+
+.products .col-lg-4{
+    margin-bottom: 20px;
+    text-align: center;
+    width: 33.33333333%;
+    float: left;
+}
+
+.products button .form-group{
+    color: gray;
+}
+
+.cart {
+	font-size: 22px;
+}
+
+.cart:hover {
+	color: #fff;
+    background-color: transparent;
+}
+
+.actions {
+    text-align: center;
+}
+
+.price {
+    display: inline-block;
+}
+
+.account-menu {
+    height: 49px;
+    font-size: 22px;
+}
