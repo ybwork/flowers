@@ -1,6 +1,7 @@
 <?php
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function() {
+	// Category
 	Route::get('/', [
 		'as' => 'admin_home',
 		'uses' => 'Admin\AdminController@index',
@@ -29,6 +30,17 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function() {
 	Route::delete('category/delete', [
 		'as' => 'category_destroy',
 		'uses' => 'Admin\CategoryController@destroy'
+	]);
+
+	// Subcategory
+	Route::get('subcategories', [
+		'as' => 'admin_subcategories',
+		'uses' => 'Admin\SubcategoryController@index'
+	]);
+
+	Route::post('subcategory/store', [
+		'as' => 'subcategory_store',
+		'uses' => 'Admin\SubcategoryController@store'
 	]);
 });
 
