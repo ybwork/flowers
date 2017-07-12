@@ -17,21 +17,21 @@ class CategoryController extends Controller
 
     public function index()
     {
-    	$categories = $this->category->getCategories();
-
+    	$categories = $this->category->get_categories();
+        
     	return view('admin.category', [
     		'categories' => $categories
     	]);
     }
 
-    public function store(Request $request)
+    public function create(Request $request)
     {
     	$this->validate($request, [
     		'name' => 'required'
     	]);
 
     	$name = $request['name'];
-    	$this->category->save($name);
+    	$this->category->create($name);
 
     	return redirect()->back()->with('message', 'Категория добавлена');
     }
@@ -57,7 +57,7 @@ class CategoryController extends Controller
     	return redirect(route('admin_categories'))->with('message', 'Категория обновлена');
     }
 
-    public function destroy(Request $request)
+    public function delete(Request $request)
     {
     	$id = $request['id'];
     	$this->category->delete($id);

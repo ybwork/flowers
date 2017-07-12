@@ -5,15 +5,15 @@ use DB;
 
 class Category
 {
-	public function getCategories()
+	public function get_categories()
 	{
-		return DB::table('categories')->select('id', 'name')->orderBy('id', 'DESC')->get();
+        return DB::table('categories')->select('id', 'name')->orderBy('id', 'DESC')->get();
 	}
 
-    public function save($name)
+    public function create($name)
     {
     	$result = DB::table('categories')->insert([
-			'name' => $name
+			'name' => $name,
     	]);
 
     	return $result;

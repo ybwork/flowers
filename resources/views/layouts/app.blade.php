@@ -18,7 +18,7 @@
 	<script type="text/javascript" src="{{ asset('/js/bootstrap.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/app.js') }}"></script>
 	<script type="text/javascript">
-	$(".js-example-basic-multiple").select2();
+		$(".js-example-basic-multiple").select2();
 	</script>
 </body>
 </html>

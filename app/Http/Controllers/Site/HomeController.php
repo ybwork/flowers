@@ -27,7 +27,7 @@ class HomeController extends Controller
      */
     public function index(Product $product, CartController $cart)
     {
-        $products = $product->getAllProducts();
+        $products = $product->get_products();
         $cart = $cart->show_products();
         
         return view('site.home', [

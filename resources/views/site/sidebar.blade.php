@@ -8,6 +8,7 @@
                 @elseif (Auth::user()->id == 1)
                     <li class="account-menu"><a href="{{ route('admin_categories') }}">Categories</a></li>
                     <li class="account-menu"><a href="{{ route('admin_subcategories') }}">Subcategories</a></li>
+                    <li class="account-menu"><a href="{{ route('admin_products') }}">Products</a></li>
                     <li class="cart">
                         <a href="{{ route('cart') }}">
                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>

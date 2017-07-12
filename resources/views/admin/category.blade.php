@@ -14,7 +14,7 @@
 								<p>{{ Session::get('message') }}</p>
 							@endif
 
-                            <form id="basic-form" action="{{ route('category_store') }}" method="POST">
+                            <form id="basic-form" action="{{ route('category_create') }}" method="POST">
                                	<input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div>
                                     <section>
@@ -51,7 +51,7 @@
                                             		<i class="fa fa-pencil" aria-hidden="true"></i>
                                             	</a>
 
-	                                            <form class="table-action-btn" action="{{ route('category_destroy') }}" method="POST">
+	                                            <form class="table-action-btn" action="{{ route('category_delete') }}" method="POST">
 													<input type="hidden" name="_method" value="DELETE">
 													<input type="hidden" name="_token" value="{{ csrf_token() }}">
 													<input type="hidden" name="id" value="{{ $category->id }}">

@@ -13,8 +13,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function() {
 	]);
 
 	Route::post('category/store', [
-		'as' => 'category_store',
-		'uses' => 'Admin\CategoryController@store'
+		'as' => 'category_create',
+		'uses' => 'Admin\CategoryController@create'
 	]);
 
 	Route::get('category/{id}/{name}/edit', [
@@ -28,8 +28,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function() {
 	]);
 
 	Route::delete('category/delete', [
-		'as' => 'category_destroy',
-		'uses' => 'Admin\CategoryController@destroy'
+		'as' => 'category_delete',
+		'uses' => 'Admin\CategoryController@delete'
 	]);
 
 	// Subcategory
@@ -38,9 +38,50 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function() {
 		'uses' => 'Admin\SubcategoryController@index'
 	]);
 
-	Route::post('subcategory/store', [
-		'as' => 'subcategory_store',
-		'uses' => 'Admin\SubcategoryController@store'
+	Route::post('subcategory/create', [
+		'as' => 'subcategory_create',
+		'uses' => 'Admin\SubcategoryController@create'
+	]);
+
+	Route::get('subcategory/{id}/edit', [
+		'as' => 'subcategory_edit',
+		'uses' => 'Admin\SubcategoryController@edit'
+	]);
+
+	Route::put('subcategory/update', [
+		'as' => 'subcategory_update',
+		'uses' => 'Admin\SubcategoryController@update'
+	]);
+
+	Route::delete('subcategory/delete', [
+		'as' => 'subcategory_delete',
+		'uses' => 'Admin\SubcategoryController@delete'
+	]);
+
+	// Product
+	Route::get('products', [
+		'as' => 'admin_products',
+		'uses' => 'Admin\ProductController@index'
+	]);
+
+	Route::post('product/create', [
+		'as' => 'product_create',
+		'uses' => 'Admin\ProductController@create'
+	]);
+
+	Route::get('product/{id}/edit', [
+		'as' => 'product_edit',
+		'uses' => 'Admin\ProductController@edit'
+	]);
+
+	Route::put('product/update', [
+		'as' => 'product_update',
+		'uses' => 'Admin\ProductController@update'
+	]);
+
+	Route::delete('product/delete', [
+		'as' => 'product_delete',
+		'uses' => 'Admin\ProductController@delete'
 	]);
 });
 
@@ -67,5 +108,3 @@ Route::group(['prefix' => 'product'], function() {
 });
 
 Auth::routes();
-
-// Route::get('/home', 'HomeController@index')->name('home');
