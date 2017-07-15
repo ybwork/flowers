@@ -22,22 +22,22 @@ class ProductController extends Controller
         $this->product = $product;
 	}
 
-    public function index(Product $product)
+    public function index()
     {
-		$categories = $this->categories->get_categories();								
+		$categories = $this->categories->get_categories();
 		$subcategories = $this->subcategories->get_subcategories();
-		// $products = $product->get_products();
+		$products = $this->product->get_products();
 
     	return view('admin.product', [
     		'categories' => $categories,
     		'subcategories' => $subcategories,
-    		// 'products' => $products
+    		'products' => $products
     	]);
     }
 
     public function create(Request $request)
     {
-        $this->validate([
+        $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
             'image' => 'required',
@@ -69,24 +69,100 @@ class ProductController extends Controller
             Storage::disk('local')->put($image_name, $image_content);
         }
 
-        // dd($image_path);
-
-        // To correctly output a category name in a template (if category several)
-        // if ($request['category']) {
-        //     $category = implode(', ', $request['category']);
-        // } else {
-        //     $category = $request['category'];
-        // }
-
-        // To correctly output a subcategory name in a template (if subcategory several)
-        // if ($request['subcategory']) {
-        //     $subcategory = implode(', ', $request['subcategory']);
-        // } else {
-        //     $subcategory = $request['subcategory'];
-        // }
-        // dd($category, $subcategory);
         $this->product->create($data);
 
-        return redirect()->back();
+        return redirect()->back()->with('message', 'Товар создан!');
+    }
+
+    public function edit(Request $request, $id)
+    {
+        $categories = $this->categories->get_categories();                              
+        $subcategories = $this->subcategories->get_subcategories();
+        $product = $this->product->show($id);
+
+        return view('admin.product_edit', [
+            'categories' => $categories, 
+            'subcategories' => $subcategories,
+            'product' => $product, 
+        ]);
+    }
+
+    public function update(Request $request, Product $product)
+    {
+        // dd($request);
+        $this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
+            'image' => 'required|image|max:200|unique:products,image',
+            'price' => 'required',
+            'category' => 'required',
+            'status' => 'required'
+        ]);
+
+        $image_name = $request->file('image')->getClientOriginalName();
+        $image_content = File::get($request->file('image'));
+
+        $old_image_path = explode('/', $request->input('old_image_path'));
+        $old_image = array_pop($old_image_path);
+
+        if ($image_name == $old_image) {
+            goto end;
+        } elseif (!Storage::exists($image_name)) {
+            Storage::delete($old_image);
+            Storage::disk('local')->put($image_name, $image_content);
+        } else {
+            return redirect()
+                        ->back()
+                        ->with('message', 'Файл с этим именем уже существует');
+        }
+
+        end:
+
+        $data = [];
+        $data['id'] = $request['id'];
+        $data['name'] = $request['name'];
+        $data['description'] = $request['description'];
+        $data['image'] = '/img/products/' . $image_name;
+        $data['price'] = $request['price'];
+        $data['category'] = $request['category'];
+        $data['subcategory'] = $request['subcategory'];
+        $data['status'] = $request['status'];
+
+        $this->product->update($data);
+
+        return redirect(route('admin_products'));
+    }
+
+    public function delete(Request $request, Product $product)
+    {
+        $image_path = explode('/', $request['image_path']);
+        $image = array_pop($image_path);
+        Storage::delete($image);
+
+        $id = $request['id'];
+        $this->product->delete($id);
+
+        return redirect()->back()->with('message', 'Товар удалён');
+    }
+
+    public function show_not_in_stock()
+    {
+        $products = DB::table('products')
+                                ->where('status', 0)
+                                ->get();
+
+        $categories = DB::table('categories')
+                                    ->orderBy('id', 'DESC')
+                                    ->get();
+                                    
+        $subcategories = DB::table('subcategories')
+                                        ->orderBy('id', 'DESC')
+                                        ->get();
+
+        return view('admin.not_in_stock', [
+            'products' => $products,
+            'categories' => $categories,
+            'subcategories' => $subcategories
+        ]);
     }
 }
