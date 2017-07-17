@@ -10,9 +10,7 @@ class Product
     {
     	$sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.status, GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS categories, GROUP_CONCAT(DISTINCT s.name SEPARATOR ', ') AS subcategories FROM products p INNER JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id INNER JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.status = 1 GROUP BY p.id";
 
-    	$products = DB::select(DB::raw($sql));
-        // dd($products);
-    	return $products;
+    	return DB::select(DB::raw($sql));
     }
 
     public function create($data)
@@ -82,5 +80,19 @@ class Product
     {
         DB::table('products')->where('id', $id)->delete();
         DB::table('products_categories_subcategories')->where('product_id', $id)->delete();
+    }
+
+    public function move($id, $status)
+    {
+        DB::table('products')->where('id', $id)->update(array(
+            'status' => $status
+        ));
+    }
+
+    public function show_out_stock()
+    {
+        $sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.status, GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS categories, GROUP_CONCAT(DISTINCT s.name SEPARATOR ', ') AS subcategories FROM products p INNER JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id INNER JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.status = 0 GROUP BY p.id";
+
+        return DB::select(DB::raw($sql));
     }
 }

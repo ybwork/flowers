@@ -122,6 +122,14 @@
                     <td>{{ $product->subcategories }}</td>
                     <td>{{ $product->status }}</td>
                     <td>
+                        <form class="table-action-btn" action="{{ route('admin_product_move') }}" method="POST">
+                            <input type="hidden" name="_method" value="PUT">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="id" value="{{ $product->id }}">
+                            <input type="hidden" name="status" value="0">
+                            <button type="submit">Нет на складе</button>  
+                        </form>
+
                         <a href="{{ route('product_edit', ['id' => $product->id]) }}" class="table-action-btn"><i class="fa fa-pencil"></i></a>
 
                         <form class="table-action-btn" action="{{ route('product_delete') }}" method="POST">

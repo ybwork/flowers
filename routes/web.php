@@ -83,6 +83,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function() {
 		'as' => 'product_delete',
 		'uses' => 'Admin\ProductController@delete'
 	]);
+
+	Route::put('product/move_out_stock', [
+		'as' => 'admin_product_move',
+		'uses' => 'Admin\ProductController@move'
+	]);
+
+	Route::get('products/out_stock', [
+		'as' => 'admin_products_out_stock',
+		'uses' => 'Admin\ProductController@show_out_stock'
+	]);
 });
 
 Route::get('/', [

@@ -145,24 +145,22 @@ class ProductController extends Controller
         return redirect()->back()->with('message', 'Товар удалён');
     }
 
-    public function show_not_in_stock()
+    public function move(Request $request)
     {
-        $products = DB::table('products')
-                                ->where('status', 0)
-                                ->get();
+        $id = $request['id'];
+        $status = $request['status'];
 
-        $categories = DB::table('categories')
-                                    ->orderBy('id', 'DESC')
-                                    ->get();
-                                    
-        $subcategories = DB::table('subcategories')
-                                        ->orderBy('id', 'DESC')
-                                        ->get();
+        $this->product->move($id, $status);
 
-        return view('admin.not_in_stock', [
+        return redirect()->back()->with('message', 'Продукт перемещён');
+    }
+
+    public function show_out_stock()
+    {
+        $products = $this->product->show_out_stock();
+
+        return view('admin.product_out_stock', [
             'products' => $products,
-            'categories' => $categories,
-            'subcategories' => $subcategories
         ]);
     }
 }
