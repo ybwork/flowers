@@ -18,7 +18,7 @@
                 @endforeach
             </select>
         </div>
-        <input type="text" name="name">
+        <input type="text" name="name" value="{{ old('name') }}">
         <button type="submit">Add</button>
     </form>
 

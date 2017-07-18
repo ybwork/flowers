@@ -11,12 +11,14 @@
         @if(Session::has('message'))
             <p>{{ Session::get('message') }}</p>
         @endif
+
+        @foreach ($product as $prod)
         <form class="form-horizontal" role="form" enctype="multipart/form-data" action="{{ route('product_update') }}" method="POST">
             <input type="hidden" name="_method" value="PUT">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="old_image_path" value="{{ $prod->image }}">
             <div class="form-horizontal">
                 <div class="col-md-6">
-                    @foreach ($product as $prod)
                         <input type="hidden" name="id" value="{{ $prod->id }}">
                         <div class="form-group">
                             <div class="col-md-10">
@@ -32,7 +34,7 @@
 
                         <div class="form-group">
                             <div class="col-md-10">
-                                <input type="file" name="image" class="form-control">
+                                <input type="file" name="image" value="{{$prod->image}}">    
                             </div>
                         </div>
                     </div>

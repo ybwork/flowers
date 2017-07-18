@@ -26,6 +26,9 @@ class Category
 
     public function delete($id)
     {
+        DB::table('products_categories_subcategories')
+                    ->where('category_id', $id)
+                    ->delete();
     	return DB::table('categories')->where('id', $id)->delete();
     }
 }

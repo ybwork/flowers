@@ -102,7 +102,7 @@ class ProductController extends Controller
         $image_name = $request->file('image')->getClientOriginalName();
         $image_content = File::get($request->file('image'));
 
-        $old_image_path = explode('/', $request->input('old_image_path'));
+        $old_image_path = explode('/', $request['old_image_path']);
         $old_image = array_pop($old_image_path);
 
         if ($image_name == $old_image) {
@@ -130,7 +130,7 @@ class ProductController extends Controller
 
         $this->product->update($data);
 
-        return redirect(route('admin_products'));
+        return redirect(route('admin_products'))->with('message', 'Продукт обновлен');
     }
 
     public function delete(Request $request, Product $product)

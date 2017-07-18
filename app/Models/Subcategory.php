@@ -65,6 +65,13 @@ class Subcategory
     public function delete($id)
     {
         DB::table('subcategories')->where('id', $id)->delete();
+
+        DB::table('products_categories_subcategories')
+                        ->where('subcategory_id', $id)
+                        ->update(array(
+                            'subcategory_id' => NULL,
+                        ));
+
         DB::table('categories_subcategories')->where('subcategory_id', $id)->delete();
     }
 }
