@@ -18,6 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
     	$categories = $this->category->get_categories();
+        // dd($categories);
         
     	return view('admin.category', [
     		'categories' => $categories

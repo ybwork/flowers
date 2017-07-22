@@ -106,6 +106,11 @@ Route::get('/cart', [
 ]);
 
 Route::group(['prefix' => 'product'], function() {
+	Route::get('/{id}', [
+		'as' => 'show_product',
+		'uses' => 'Site\ProductController@show'
+	]);
+
 	Route::post('/add-to-cart', [
 		'as' => 'product_add_to_cart',
 		'uses' => 'Site\ProductController@add_to_cart'
@@ -116,5 +121,11 @@ Route::group(['prefix' => 'product'], function() {
 		'uses' => 'Site\ProductController@delete_from_cart'
 	]);
 });
+
+Route::get('/category/{id}/{subcat_id?}', [
+	'as' => 'cats_subcats',
+	'uses' => 'Site\CategoryController@show_cats_subcats'
+]);
+
 
 Auth::routes();

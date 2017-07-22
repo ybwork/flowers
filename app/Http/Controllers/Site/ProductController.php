@@ -3,11 +3,24 @@
 namespace App\Http\Controllers\Site;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Session;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Site\CartController;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
+    public function show(CartController $cart, Product $product, $id)
+    {
+        $product = $product->show($id);
+        $cart = $cart->show_products();
+        
+        return view('site.product',[
+            'product' => $product,
+            'cart' => $cart
+        ]);
+    }
+
     public function add_to_cart(Request $request)
     {
         $product_id = $request->input('product_id');

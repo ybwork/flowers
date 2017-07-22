@@ -35,6 +35,25 @@
                             </li>
                         </ul>
                     </li>                   
+                    @foreach($categories_subcategories as $cat_subcats)
+                        <li class="grid"><a href="{{ route('cats_subcats', ['id' => $cat_subcats->id]) }}">{{ $cat_subcats->name }}</a>
+                        @if($cat_subcats->subcategories[0]['name'])
+                            <div class="mepanel">
+                                <div class="row">
+                                    <div class="col1 me-one">
+                                        <ul>
+                                        @foreach($cat_subcats->subcategories as $subcats)
+                                            @if($subcats['name'])
+                                                <li><a href="{{ route('cats_subcats', ['id' => $cat_subcats->id, 'subcat_id' => $subcats['id']]) }}">{{ $subcats['name'] }}</a></li>
+                                            @endif
+                                        @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        </li>
+                    @endforeach
                 @else
 	                <li class="cart">
 						<a href="{{ route('cart') }}">

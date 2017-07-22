@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Site;
 
 use Illuminate\Http\Request;
-use App\Models\Product;
 use App\Http\Controllers\Site\CartController;
 use App\Http\Controllers\Site\ProductController;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 
 class HomeController extends Controller
 {

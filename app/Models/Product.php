@@ -95,4 +95,19 @@ class Product
 
         return DB::select(DB::raw($sql));
     }
+
+    public function show_by_cats_subcats($id, $subcat_id=NULL)
+    {
+        if ($subcat_id) {
+            $sql = "SELECT p_c_s.product_id, p.id, p.name, p.description, p.image, p.price, p.status FROM products_categories_subcategories p_c_s JOIN products p ON p_c_s.product_id = p.id WHERE $id = p_c_s.category_id AND $subcat_id = p_c_s.subcategory_id GROUP BY p_c_s.product_id";
+
+            $products = DB::select(DB::raw($sql));
+        } else {
+            $sql = "SELECT p_c_s.product_id, p.id, p.name, p.description, p.image, p.price, p.status FROM products_categories_subcategories p_c_s JOIN products p ON p_c_s.product_id = p.id WHERE $id = p_c_s.category_id GROUP BY p_c_s.product_id";
+
+            $products = DB::select(DB::raw($sql));          
+        }
+
+        return $products;
+    }
 }
