@@ -13,6 +13,7 @@
         @endif
 
         @foreach ($product as $prod)
+
         <form class="form-horizontal" role="form" enctype="multipart/form-data" action="{{ route('product_update') }}" method="POST">
             <input type="hidden" name="_method" value="PUT">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -53,7 +54,7 @@
                                     <?php foreach ($categories as $category): ?>
                                         <?php $selected = ''; ?>
                                         <?php foreach ($cats as $cat): ?>
-                                            <?php if ($category->id == substr($cat, 0, 1)): ?>
+                                            <?php if ($category->id == preg_replace('/[^A-Za-z0-9\-]+/', '', $cat)): ?>
                                                 <?php $selected = 'selected'; ?>
                                             <?php endif; ?>
                                         <?php endforeach; ?>
@@ -83,9 +84,19 @@
                         <div class="form-group">
                             <div class="col-sm-10">
                                 <select name="status" class="form-control">
-                                    <option value="">Status</option>
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
+                                    <?php
+                                        $status_yes = '';
+                                        $status_no = '';
+
+                                        if ($prod->status) {
+                                            $status_yes = 'selected';
+                                        } else {
+                                            $status_no = 'selected';
+                                        }
+                                    ?>
+                                    <option value=""></option>
+                                    <option <?php print $status_yes; ?> value="1">Yes</option>
+                                    <option <?php print $status_no; ?> value="0">No</option>
                                 </select>
                             </div>
                         </div>

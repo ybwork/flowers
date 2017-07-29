@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Illuminate\Pagination\Paginator;
 
 class CategoryController extends Controller
 {
@@ -62,6 +63,13 @@ class CategoryController extends Controller
     {
     	$id = $request['id'];
     	$this->category->delete($id);
+        // dd($result);
+        // if ($result) {
+        //     $message = 'Категория удалена';
+        // } else {
+        //     $message = 'Категория не может быть удалена, так как имеет связи с продуктами и подкатегориями';
+        //     $message = 'Что то пошло не так, попробуйте позже';
+        // }
 
     	return redirect(route('admin_categories'))->with('message', 'Категория удалена');
     }

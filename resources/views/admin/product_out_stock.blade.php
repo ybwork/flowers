@@ -62,8 +62,6 @@
                 @endforeach
             </tbody>
           </table>
-        @else
-        	<p>Все продукты есть в наличии</p>
         @endif
 
             </div>

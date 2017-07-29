@@ -46,7 +46,7 @@ class SubcategoryController extends Controller
     {
         $subcategory = $this->subcategory->show($id);
         $categories = $category->get_categories();
-        
+        // dd($subcategory);
         foreach ($subcategory as $subcat) {
             $cats = explode(',', $subcat->categories);
 

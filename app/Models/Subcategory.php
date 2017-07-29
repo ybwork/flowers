@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use DB;
+use Illuminate\Pagination\Paginator;
 
 class Subcategory
 {
     public function get_subcategories()
     {
-        $sql = "SELECT sub.id, sub.name, GROUP_CONCAT(DISTINCT cat.id, cat.name  SEPARATOR ', ') AS categories FROM subcategories sub INNER JOIN categories_subcategories cat_sub ON sub.id = cat_sub.subcategory_id INNER JOIN categories cat ON cat_sub.category_id = cat.id GROUP BY sub.id";
+        $sql = "SELECT sub.id, sub.name, GROUP_CONCAT(DISTINCT cat.id, cat.name  SEPARATOR ', ') AS categories FROM subcategories sub LEFT JOIN categories_subcategories cat_sub ON sub.id = cat_sub.subcategory_id LEFT JOIN categories cat ON cat_sub.category_id = cat.id GROUP BY sub.id";
 
         $subcat_cats = DB::select(DB::raw($sql));
 
@@ -35,7 +36,7 @@ class Subcategory
 
     public function show($id)
     {
-        $sql = "SELECT sub.id, sub.name, GROUP_CONCAT(DISTINCT cat.id, cat.name  SEPARATOR ', ') AS categories FROM subcategories sub INNER JOIN categories_subcategories cat_sub ON sub.id = cat_sub.subcategory_id INNER JOIN categories cat ON cat_sub.category_id = cat.id WHERE sub.id = $id GROUP BY sub.id";
+        $sql = "SELECT sub.id, sub.name, GROUP_CONCAT(DISTINCT cat.id, cat.name  SEPARATOR ', ') AS categories FROM subcategories sub LEFT JOIN categories_subcategories cat_sub ON sub.id = cat_sub.subcategory_id LEFT JOIN categories cat ON cat_sub.category_id = cat.id WHERE sub.id = $id GROUP BY sub.id";
 
         $subcategory = DB::select(DB::raw($sql));
 
@@ -66,12 +67,12 @@ class Subcategory
     {
         DB::table('subcategories')->where('id', $id)->delete();
 
+        DB::table('categories_subcategories')->where('subcategory_id', $id)->delete();
+
         DB::table('products_categories_subcategories')
                         ->where('subcategory_id', $id)
                         ->update(array(
                             'subcategory_id' => NULL,
                         ));
-
-        DB::table('categories_subcategories')->where('subcategory_id', $id)->delete();
     }
 }

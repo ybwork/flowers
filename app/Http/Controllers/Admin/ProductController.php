@@ -27,7 +27,7 @@ class ProductController extends Controller
 		$categories = $this->categories->get_categories();
 		$subcategories = $this->subcategories->get_subcategories();
 		$products = $this->product->get_products();
-
+        // dd($products);
     	return view('admin.product', [
     		'categories' => $categories,
     		'subcategories' => $subcategories,
@@ -79,7 +79,7 @@ class ProductController extends Controller
         $categories = $this->categories->get_categories();                              
         $subcategories = $this->subcategories->get_subcategories();
         $product = $this->product->show($id);
-
+        // dd($product);
         return view('admin.product_edit', [
             'categories' => $categories, 
             'subcategories' => $subcategories,
