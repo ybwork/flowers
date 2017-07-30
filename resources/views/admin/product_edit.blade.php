@@ -13,7 +13,6 @@
         @endif
 
         @foreach ($product as $prod)
-
         <form class="form-horizontal" role="form" enctype="multipart/form-data" action="{{ route('product_update') }}" method="POST">
             <input type="hidden" name="_method" value="PUT">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -35,7 +34,13 @@
 
                         <div class="form-group">
                             <div class="col-md-10">
-                                <input type="file" name="image" value="{{$prod->image}}">    
+                                <img src="{{ $prod->image }}" height="62" width="62">    
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input type="file" name="image" class="custom-file-input">    
                             </div>
                         </div>
                     </div>

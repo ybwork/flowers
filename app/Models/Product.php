@@ -14,10 +14,11 @@ class Product
         $products = DB::select(DB::raw($sql));
         // $data = DB::select(DB::raw($sql));
 
-        // $test_product = DB::table('products')->get();
-        // $products = collect($data)->paginate(2);
-
-        // dd($new_products);
+        // $products = DB::table('products')->paginate(2);
+        // $products = collect($data);
+        
+        // $products = collect($data)->chunk(2);
+        // dd($products->toArray());
     	return $products;
     }
 

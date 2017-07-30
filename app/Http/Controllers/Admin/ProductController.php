@@ -90,33 +90,68 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         // dd($request);
+        // 'image' => 'required|image|max:200|unique:products,image',
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required|image|max:200|unique:products,image',
+            'image' => 'image|max:200|unique:products,image',
             'price' => 'required',
             'category' => 'required',
             'status' => 'required'
         ]);
 
-        $image_name = $request->file('image')->getClientOriginalName();
-        $image_content = File::get($request->file('image'));
+        if ($request->file('image')) {
+            $image_name = $request->file('image')->getClientOriginalName();
+            // dd($image_name);
+            $image_content = File::get($request->file('image'));
+        } else {
+            $image_name = '';
+        }
 
         $old_image_path = explode('/', $request['old_image_path']);
         $old_image = array_pop($old_image_path);
+        // dd($old_image);
+        
+        // $image_name = $request->file('image')->getClientOriginalName();
+        // $image_content = File::get($request->file('image'));
 
-        if ($image_name == $old_image) {
-            goto end;
-        } elseif (!Storage::exists($image_name)) {
-            Storage::delete($old_image);
-            Storage::disk('local')->put($image_name, $image_content);
-        } else {
+        // $old_image_path = explode('/', $request['old_image_path']);
+        // $old_image = array_pop($old_image_path);
+
+        // if ($image_name == $old_image) {
+        //     goto end;
+        // } elseif (!Storage::exists($image_name)) {
+        //     Storage::delete($old_image);
+        //     Storage::disk('local')->put($image_name, $image_content);
+        // } else {
+        //     return redirect()
+        //                 ->back()
+        //                 ->with('message', 'Файл с этим именем уже существует');
+        // }
+
+        // end:
+
+        // $data = [];
+        // $data['id'] = $request['id'];
+        // $data['name'] = $request['name'];
+        // $data['description'] = $request['description'];
+        // $data['image'] = '/img/products/' . $image_name;
+        // $data['price'] = $request['price'];
+        // $data['category'] = $request['category'];
+        // $data['subcategory'] = $request['subcategory'];
+        // $data['status'] = $request['status'];
+
+
+        if (Storage::exists($image_name)) {
             return redirect()
                         ->back()
                         ->with('message', 'Файл с этим именем уже существует');
+        } elseif (!$image_name) {
+            $image_name = $old_image;
+        } else {
+            Storage::delete($old_image);
+            Storage::disk('local')->put($image_name, $image_content);
         }
-
-        end:
 
         $data = [];
         $data['id'] = $request['id'];
