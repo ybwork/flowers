@@ -39,6 +39,7 @@ class ProductController extends Controller
         $response = [];
         $response['status'] = 'added';
         $response['count'] = count(Session::get('products'));
+        $response['product_id'] = $product_id;
         $response['message'] = 'Товар добавлен в корзину';
         
         return json_encode($response);

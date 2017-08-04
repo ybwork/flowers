@@ -127,5 +127,10 @@ Route::get('/category/{id}/{subcat_id?}', [
 	'uses' => 'Site\CategoryController@show_cats_subcats'
 ]);
 
+Route::post('/order/create', [
+	'as' => 'order_create',
+	'uses' => 'Site\OrderController@create'
+]);
+
 
 Auth::routes();

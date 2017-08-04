@@ -29,7 +29,7 @@ class HomeController extends Controller
     {
         $products = $product->get_products();
         $cart = $cart->show_products();
-        
+        // dd($cart);
         return view('site.home', [
             'products' => $products,
             'cart' => $cart
