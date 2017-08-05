@@ -30,6 +30,8 @@
 			        </div>
 			    </a>
 			@endforeach
+
+			{{ $products->links()}}
 	    </div>
 	</div>
 @endsection

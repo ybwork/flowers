@@ -5,6 +5,7 @@ namespace App\Models;
 use DB;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Routing\UrlGenerator;
 
 class Product
 {
@@ -119,12 +120,25 @@ class Product
             $sql = "SELECT p_c_s.product_id, p.id, p.name, p.description, p.image, p.price, p.status FROM products_categories_subcategories p_c_s JOIN products p ON p_c_s.product_id = p.id WHERE $id = p_c_s.category_id AND $subcat_id = p_c_s.subcategory_id GROUP BY p_c_s.product_id";
 
             $products = DB::select(DB::raw($sql));
+
         } else {
             $sql = "SELECT p_c_s.product_id, p.id, p.name, p.description, p.image, p.price, p.status FROM products_categories_subcategories p_c_s JOIN products p ON p_c_s.product_id = p.id WHERE $id = p_c_s.category_id GROUP BY p_c_s.product_id";
 
             $products = DB::select(DB::raw($sql));          
         }
 
+        $current_page = 1;
+        $per_page = 6;
+
+        if (count($_REQUEST) > 0) {
+            $current_page = $_REQUEST['page'];
+        }
+
+        $offset = ($current_page * $per_page) - $per_page;
+        $current_url = url()->current();
+        $products = new LengthAwarePaginator(array_slice($products, $offset, $per_page, true), count($products), $per_page, $current_page, ['path' => $current_url]);
+
+        // dd(url()->current());
         return $products;
     }
 }
