@@ -2,6 +2,12 @@
 <html>
 <head>
 	<title>Cart</title>
+	<meta http-equiv>
+	<?php
+   		header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0");
+   		header("Pragma: no-cache");
+   		header("Expires: Thu, 19 Nov 1981 08:52:00 GMT");
+	?>
 	<link rel="stylesheet" type="text/css" href="{{ asset('/css/app.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap-theme.min.css') }}">

@@ -25,7 +25,7 @@ $(document).ready(function() {
 	function customizeForm(form, action, method, color, text) {
 		form.attr('action', action);
 		form.find('input[name="_method"]').val(method);
-		form.find('#ajax-button').css('background', color).text(text);
+		form.find('.ajax-button').css('background', color).text(text);
 
 		// localStorage.setItem('action', action);
 		// localStorage.setItem('method', method);
@@ -35,7 +35,7 @@ $(document).ready(function() {
 		return true;
 	}
 
-	$(document).on('submit', '#ajax-form', function(e) {
+	$(document).on('submit', '.ajax-form', function(e) {
 		e.preventDefault();
 
 		var form = $(this);
