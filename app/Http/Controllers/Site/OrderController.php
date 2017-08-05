@@ -14,11 +14,12 @@ class OrderController extends Controller
     	
     	$user_id = Auth::user()->id;
     	$products_id = Session::get('products');
+    	dd($products_id);
 
     	$order_result = $order->create($user_id, $products_id);
     	$order_info = $order->get_info($user_id, $products_id);
+    	// Тут отправка инфы на почту
 
-    	// dd($order, $order_info);
 
     	// Перед выводом сообщения пользователю проверка на все этапы заказа (создание, вывод инвы, отправка админу)
     	$response = [];

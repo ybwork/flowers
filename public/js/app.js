@@ -137,7 +137,7 @@ $(document).ready(function() {
 		var action = form.attr('action');
 		var method = form.attr('method');
 		var data = new FormData(form[0]);
-
+		
 		$.ajax({
 			url: action,
 			type: method,

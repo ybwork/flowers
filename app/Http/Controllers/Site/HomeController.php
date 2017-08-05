@@ -28,8 +28,8 @@ class HomeController extends Controller
     public function index(Product $product, CartController $cart)
     {
         $products = $product->get_products();
+        // dd($products);
         $cart = $cart->show_products();
-        // dd($cart);
         return view('site.home', [
             'products' => $products,
             'cart' => $cart

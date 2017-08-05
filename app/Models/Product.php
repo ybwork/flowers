@@ -3,22 +3,28 @@
 namespace App\Models;
 
 use DB;
-use Illuminate\Pagination;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class Product
 {
     public function get_products()
     {
     	$sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.status, GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS categories, GROUP_CONCAT(DISTINCT s.name SEPARATOR ', ') AS subcategories FROM products p LEFT JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id LEFT JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.status = 1 GROUP BY p.id";
-
         $products = DB::select(DB::raw($sql));
-        // $data = DB::select(DB::raw($sql));
 
-        // $products = DB::table('products')->paginate(2);
-        // $products = collect($data);
-        
-        // $products = collect($data)->chunk(2);
-        // dd($products->toArray());
+        $current_page = 1;
+        $per_page = 6;
+
+        if (count($_REQUEST) > 0) {        
+            $current_page = $_REQUEST['page'];
+        }
+
+        $offset = ($per_page * $current_page) - $per_page;
+
+        $products = new LengthAwarePaginator(array_slice($products, $offset, $per_page, true), count($products), $per_page, $current_page);
+
+        // dd($products);
     	return $products;
     }
 

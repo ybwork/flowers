@@ -8,10 +8,11 @@
 					<div class="panel panel-info">
 						@foreach($products as $key => $product)
 						<div id="cartItem">
-							<form id="deleteItem" action="{{ route('product_delete_from_cart') }}" method="POST">
+							<form id="deleteItem" class="delete-item" action="{{ route('product_delete_from_cart') }}" method="POST">
 								<input type="hidden" name="_token" value="{{ csrf_token() }}">
 								<input type="hidden" name="_method" value="DELETE">
-								<input id="product_id" type="hidden" name="product_id" value="{{ $product->id }}">
+								<input id="product_id" class="product_id" type="hidden" name="product_id" value="{{ $product->id }}">
+
 								<div class="panel-body">
 									<div class="row">
 										<div class="col-xs-2"><img class="img-responsive" src="{{ asset($product->image) }}">
@@ -24,12 +25,12 @@
 												<h6><strong>{{ $product->price }} руб.</strong></h6>
 											</div>
 											<div class="col-xs-4">
-												<input type="number" class="form-control input-sm" value="1">
+												<input class="count" type="number" class="form-control input-sm" value="1">
 											</div>
-
 										</div>
 									</div>
 								</div>
+
 								<button type="submit" class="btn btn-danger btn-sm">
 									<i class="fa fa-trash-o"></i>
 								</button>
