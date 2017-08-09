@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-box">
 	@foreach($errors->all() as $error)
 		<p>{{ $error }}</p>
 	@endforeach
@@ -62,4 +67,9 @@
             @endif
         </div>
     </div>
+</div>
+</div>
+</div>
+</div>
+</div>
 @stop

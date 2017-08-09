@@ -6,14 +6,14 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="panel panel-info">
-						@foreach($products as $key => $product)
-						<div id="cartItem">
-							<form id="deleteItem" class="delete-item" action="{{ route('product_delete_from_cart') }}" method="POST">
+
+
+							<form class="order" action="{{ route('order_create') }}" method="POST">
 								<input type="hidden" name="_token" value="{{ csrf_token() }}">
-								<input type="hidden" name="_method" value="DELETE">
-								<input id="product_id" class="product_id" type="hidden" name="product_id" value="{{ $product->id }}">
+						@foreach($products as $key => $product)
 
 								<div class="panel-body">
+									<input class="product-id" type="hidden" name="product_id[]" value="{{ $product->id }}">
 									<div class="row">
 										<div class="col-xs-2"><img class="img-responsive" src="{{ asset($product->image) }}">
 										</div>
@@ -25,26 +25,23 @@
 												<h6><strong>{{ $product->price }} руб.</strong></h6>
 											</div>
 											<div class="col-xs-4">
-												<input class="count" type="number" class="form-control input-sm" value="1">
+												<input type="number" name="count[]" class="form-control input-sm" value="1">
 											</div>
 										</div>
 									</div>
+									<button class="btn btn-danger btn-sm delete-item">
+										<i class="fa fa-trash-o"></i>
+									</button>
 								</div>
 
-								<button type="submit" class="btn btn-danger btn-sm">
-									<i class="fa fa-trash-o"></i>
-								</button>
-							</form>				
-						</div>
+
 						@endforeach
+								<div class="col-xs-12">
+									<h4><strong>Общая сумма заказа: {{ $subtotal }} руб.</strong></h4>
+								</div>
+								<button type="submit" class="btn btn-success btn-sm col-md-12">Заказать</button>
+							</form>
 					</div>
-				</div>
-				<div class="col-xs-12">
-					<h4><strong>Общая сумма заказа: {{ $subtotal }} руб.</strong></h4>
-					<form id="order" action="{{ route('order_create') }}" method="POST">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
-						<button type="submit" class="btn btn-success btn-sm col-md-12">Заказать</button>
-					</form>	
 				</div>
 			</div>
 		</div>

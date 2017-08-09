@@ -2,6 +2,7 @@
 	<div class="header clearfix">
 		<nav>
 			<ul class="nav nav-pills pull-right">
+                <li class="account-menu"><a class="home" href="{{ route('home') }}">Главная</a></li>
             @if (Auth::user())
                 <!-- Admin navig -->
                 @if (Auth::user()->id == 1):
@@ -13,21 +14,16 @@
 
                 <!-- Site navig -->
                 @foreach($categories_subcategories as $cat_subcats)
-                    <li class="grid"><a href="{{ route('cats_subcats', ['id' => $cat_subcats->id]) }}">{{ $cat_subcats->name }}</a>
+
+                    <li class="account-menu"><a href="{{ route('cats_subcats', ['id' => $cat_subcats->id]) }}">{{ $cat_subcats->name }}</a>
                     @if($cat_subcats->subcategories[0]['name'])
-                        <div class="mepanel">
-                            <div class="row">
-                                <div class="col1 me-one">
-                                    <ul>
-                                    @foreach($cat_subcats->subcategories as $subcats)
-                                        @if($subcats['name'])
-                                            <li><a href="{{ route('cats_subcats', ['id' => $cat_subcats->id, 'subcat_id' => $subcats['id']]) }}">{{ $subcats['name'] }}</a></li>
-                                        @endif
-                                    @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        <ul class="nav nav-pills pull-right">
+                            @foreach($cat_subcats->subcategories as $subcats)
+                                @if($subcats['name'])
+                                    <li class="account-menu"><a href="{{ route('cats_subcats', ['id' => $cat_subcats->id, 'subcat_id' => $subcats['id']]) }}">{{ $subcats['name'] }}</a></li>
+                                @endif
+                            @endforeach
+                        </ul>
                     @endif
                     </li>
                 @endforeach
@@ -63,7 +59,7 @@
                         </ul>
                     </li>
                 @endif
+                </ul>
 		</nav>
-		<h3 class="text-muted"><a class="home" href="{{ route('home') }}">Главная</a></h3>
 	</div>
 </div>

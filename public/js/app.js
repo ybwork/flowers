@@ -2,35 +2,10 @@ $(document).ready(function() {
 
 	var _token = $('input[name="_token"]').val();
 
-	// var count = localStorage.getItem('count');
-	// if (count) {	
-	// 	$('#count-product').text(localStorage.getItem('count'));
-	// 	console.log(count);
-	// }
-	
-	// 	var form = $(this);
-
-	// form.attr('action', localStorage.getItem('action'));
-	// form.find('input[type="_method"]').val(localStorage.getItem('method'));
-	// form.find('#ajax-button')
-	// 	.css('background', localStorage.getItem('color'))
-	// 	.text(localStorage.getItem('text'));
-
-	// localStorage.removeItem('count');
-	// localStorage.removeItem('action');
-	// localStorage.removeItem('method');
-	// localStorage.removeItem('color');
-	// localStorage.removeItem('text');
-
 	function customizeForm(form, action, method, color, text) {
 		form.attr('action', action);
 		form.find('input[name="_method"]').val(method);
 		form.find('.ajax-button').css('background', color).text(text);
-
-		// localStorage.setItem('action', action);
-		// localStorage.setItem('method', method);
-		// localStorage.setItem('color', color);
-		// localStorage.setItem('text', text);
 		
 		return true;
 	}
@@ -42,7 +17,7 @@ $(document).ready(function() {
 		var	action = form.attr('action');
 		var	method = form.attr('method');
 		var data = new FormData(form[0]);
-
+		console.log(action);
 		$.ajax({
 			url: action,
 			data: data,
@@ -56,7 +31,7 @@ $(document).ready(function() {
 
 			success: function(data) {
 				var response = $.parseJSON(data);
-				// console.log(response['status']);
+
 				if (response['status'] == 'added') {
 					customizeForm(
 						form, 
@@ -65,8 +40,7 @@ $(document).ready(function() {
 						'red', 
 						'Отказаться'
 					);
-					// localStorage.setItem('count', response['count']);
-					// $('#count-product').text(localStorage.getItem('count'));
+
 					$('#count-product').text(response['count']);
 				} else if (response['status'] == 'deleted') {
 					customizeForm(
@@ -76,8 +50,7 @@ $(document).ready(function() {
 						'green', 
 						'Заказать'
 					);
-					// localStorage.removeItem('count');
-					// $('#count-product').text(localStorage.getItem('count'));
+
 					$('#count-product').text(response['count']);
 				}
 
@@ -89,79 +62,117 @@ $(document).ready(function() {
 		});
 	});
 
-	$(document).on('submit', '#deleteItem', function(e) {
-		e.preventDefault();
+	// $(document).on('submit', '.delete-item', function(e) {
+	// 	e.preventDefault();
 
-		var form = $(this);
-		var	action = form.attr('action');
-		var	method = form.attr('method');
-		var data = new FormData(form[0]);
+	// 	var form = $(this);
+	// 	var	action = form.attr('action');
+	// 	var	method = form.attr('method');
+	// 	var data = new FormData(form[0]);
 
-		$.ajax({
-			url: action,
-			data: data,
-			type: method,
-			contentType: false,
-			cache: false,
-			processData:false,
-			headers: {
-				'X-CSRF-TOKEN': _token
-			},
+	// 	$.ajax({
+	// 		url: action,
+	// 		data: data,
+	// 		type: method,
+	// 		contentType: false,
+	// 		cache: false,
+	// 		processData:false,
+	// 		headers: {
+	// 			'X-CSRF-TOKEN': _token
+	// 		},
 
-			success: function(data) {
-				var response = $.parseJSON(data);
+	// 		success: function(data) {
+	// 			var response = $.parseJSON(data);
 				
-				if (response['status'] == 'deleted') {
-					// form.remove('#delete-item');
-					$('#cartItem').remove();
-					// localStorage.removeItem('count');
-					// localStorage.removeItem('action');
-					// localStorage.removeItem('method');
-					// localStorage.removeItem('color');
-					// localStorage.removeItem('text');
-				}
+	// 			if (response['status'] == 'deleted') {
+	// 				form.remove();
+	// 			}
 
-				$('#count-product').text(response['count']);
-			},
+	// 			$('#count-product').text(response['count']);
+	// 		},
 
-			error: function(e) {
+	// 		error: function(e) {
 
-			},
-		});
-	});
+	// 		},
+	// 	});
+	// });
 
-	$(document).on('submit', '#order', function(e) {
+	// $(document).on('submit', '#order', function(e) {
+	// 	e.preventDefault();
+
+	// 	var form = $(this);
+	// 	var action = form.attr('action');
+	// 	var method = form.attr('method');
+	// 	var data = new FormData(form[0]);
+		
+	// 	$.ajax({
+	// 		url: action,
+	// 		type: method,
+	// 		data: data,
+	// 		cache: false,
+	// 		contentType: false,
+	// 		processData: false,
+	// 		headers: {
+	// 			'X-CSRF-TOKEN': _token
+	// 		},
+
+	// 		success: function(data) {
+	// 			var response = $.parseJSON(data);
+
+	// 			if (response['status'] == 'success') {
+	// 				console.log(1);
+	// 			} else {
+	// 				console.log(0);
+	// 			}
+	// 		},
+
+	// 		error: function(e) {
+
+	// 		}
+	// 	})
+	// });
+
+	$(document).on('click', '.delete-item', function(e) {
 		e.preventDefault();
 
-		var form = $(this);
-		var action = form.attr('action');
-		var method = form.attr('method');
-		var data = new FormData(form[0]);
-		
-		$.ajax({
-			url: action,
-			type: method,
-			data: data,
-			cache: false,
-			contentType: false,
-			processData: false,
-			headers: {
-				'X-CSRF-TOKEN': _token
-			},
+		var	action = 'http://' + window.location.host + '/product/delete-from-cart';
+		var	method = 'POST';
+		var data = $(this).closest('.panel-body').find('.product-id').val();
+		$('.order').find('.panel-body').eq(0).remove();
+		var panel = $('.order').find('.panel-body');
+		if (panel.length == 0) {
+			$('.order').remove();
+		}
 
-			success: function(data) {
-				var response = $.parseJSON(data);
+		// $.ajax({
+		// 	url: action,
+		// 	data: data,
+		// 	type: method,
+		// 	contentType: false,
+		// 	cache: false,
+		// 	processData:false,
+		// 	headers: {
+		// 		'X-CSRF-TOKEN': _token,
+		// 		'ACCESS-CONTROL-ALLOW-ORIGIN': '*',
+		// 		'ACCESS-CONTROL-ALLOW-METHODS': 'GET, POST, PUT, DELETE',
+		// 		'ACCESS-CONTROL-ALLOW-HEADERS': 'CONTENT-TYPE, ACCEPT',
+		// 	},
 
-				if (response['status'] == 'success') {
-					console.log(1);
-				} else {
-					console.log(0);
-				}
-			},
+		// 	success: function(data) {
+		// 		var response = $.parseJSON(data);
+				
+		// 		if (response['status'] == 'deleted') {
+		// 			form.remove();
+		// 		}
 
-			error: function(e) {
+		// 		$('#count-product').text(response['count']);
+		// 	},
 
-			}
-		})
+		// 	error: function(e) {
+
+		// 	},
+		// });
 	});
+
+
 });

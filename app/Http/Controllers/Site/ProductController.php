@@ -47,6 +47,7 @@ class ProductController extends Controller
 
     public function delete_from_cart(Request $request)
     {
+        // dd($request->input('product_id'));
         $product_id = $request->input('product_id');
 
         $session = Session::all();

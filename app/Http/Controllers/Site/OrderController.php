@@ -14,7 +14,7 @@ class OrderController extends Controller
     	
     	$user_id = Auth::user()->id;
     	$products_id = Session::get('products');
-    	dd($products_id);
+    	dd($request['count']);
 
     	$order_result = $order->create($user_id, $products_id);
     	$order_info = $order->get_info($user_id, $products_id);
