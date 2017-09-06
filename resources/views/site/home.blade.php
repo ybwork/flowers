@@ -8,7 +8,10 @@
 			        <div class="col-lg-4">
 						<img src="{{ $product->image }}" width="140" height="140">
 						<h2>{{ $product->name }}</h2>
-						<h3>Price: ${{ $product->price }}</h2>
+						<h4 class="product-price">{{ $product->price }} руб.</h4>
+						@if ($product->stock_price)
+							<h3 class="stock">Акция: {{ $product->stock_price }} руб.</h3>
+						@endif
 						<p>{{ $product->description }}</p>
 						<p>
 							@if(array_key_exists($product->id, $cart))

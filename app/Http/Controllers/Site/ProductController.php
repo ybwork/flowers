@@ -47,27 +47,39 @@ class ProductController extends Controller
 
     public function delete_from_cart(Request $request)
     {
-        // dd($request->input('product_id'));
-        $product_id = $request->input('product_id');
-
+        $product_id = $request['product_id'];
+        
         $session = Session::all();
 
-        $arr = [];
+        // $arr = [];
 
         // To be able to remove the element
-        foreach ($session['products'] as $key => $value) {
-            $arr[$key] = $value;
+        // dd(count($session['products']));
+        for ($i = count($session['products']) - 1; $i >= 0; $i--) {
+        // dd($session['products'][$i]);
+            if ($session['products'][$i] == $product_id) {
+                unset($session['products'][$i]);
+            }   
         }
+        // foreach ($session['products'] as $key => $value) {
+        //     // dd($product_id);
+        //     if ($value == $product_id) {
+        //         unset($session['products'][$key]);
+        //     }
 
-        $products = array_flip($arr);
+        //     // $arr[$key] = $value;
+        // }
 
-        unset($products[$product_id]);
+        // $products = array_flip($arr);
+        // unset($products[$product_id]);
 
+        $products = $session['products'];
+        // dd($products);
         try {
             Session::pull('products');
 
             foreach ($products as $key => $value) {
-                Session::push('products', $key);
+                Session::push('products', $value);
             }
         } catch (Exception $e){
             $response = [];

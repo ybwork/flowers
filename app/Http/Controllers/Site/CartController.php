@@ -11,23 +11,21 @@ class CartController extends Controller
 {
 	public function index()
 	{
+		// Session::forget('products');
 		$cart = Session::get('products');
-
+		// dd($cart);
 		$products = collect([]);
 
 		$subtotal = 0;
 
 		if ($cart) {
 			// For more information about product by id
+			$query = DB::table('products');
 			foreach ($cart as $key => $product_id) {
-				$query = DB::table('products')
-										->where('id', $product_id)
-										->get();
-
-				foreach ($query as $product) {
-					$arr[] = $product;
-				}
+				$query->orWhere('id', $product_id);
 			}
+
+			$arr = $query->get()->toArray();
 
 			foreach ($arr as $value) {
 				$products->push($value);

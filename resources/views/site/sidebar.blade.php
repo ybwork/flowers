@@ -5,7 +5,7 @@
                 <li class="account-menu"><a class="home" href="{{ route('home') }}">Главная</a></li>
             @if (Auth::user())
                 <!-- Admin navig -->
-                @if (Auth::user()->id == 1):
+                @if (Auth::user()->role == 1):
                     <li class="account-menu"><a href="{{ route('admin_categories') }}">Категории</a></li>
                     <li class="account-menu"><a href="{{ route('admin_subcategories') }}">Подкатегории</a></li>
                     <li class="account-menu"><a href="{{ route('admin_products') }}">Продукты</a></li>

@@ -54,6 +54,7 @@ class ProductController extends Controller
         $data['description'] = $request['description'];
         $data['image'] = $image_path;
         $data['price'] = $request['price'];
+        $data['stock_price'] = $request['stock_price'];
         $data['category'] = $request['category'];
         $data['subcategory'] = $request['subcategory'];
         $data['status'] = $request['status'];
@@ -159,6 +160,7 @@ class ProductController extends Controller
         $data['description'] = $request['description'];
         $data['image'] = '/img/products/' . $image_name;
         $data['price'] = $request['price'];
+        $data['stock_price'] = $request['stock_price'];
         $data['category'] = $request['category'];
         $data['subcategory'] = $request['subcategory'];
         $data['status'] = $request['status'];

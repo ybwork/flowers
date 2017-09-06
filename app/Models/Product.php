@@ -11,7 +11,8 @@ class Product
 {
     public function get_products()
     {
-    	$sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.status, GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS categories, GROUP_CONCAT(DISTINCT s.name SEPARATOR ', ') AS subcategories FROM products p LEFT JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id LEFT JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.status = 1 GROUP BY p.id";
+    	$sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.stock_price, p.status, GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS categories, GROUP_CONCAT(DISTINCT s.name SEPARATOR ', ') AS subcategories FROM products p LEFT JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id LEFT JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.status = 1 GROUP BY p.id ORDER BY p.id DESC";
+
         $products = DB::select(DB::raw($sql));
 
         $current_page = 1;
@@ -25,7 +26,6 @@ class Product
 
         $products = new LengthAwarePaginator(array_slice($products, $offset, $per_page, true), count($products), $per_page, $current_page);
 
-        // dd($products);
     	return $products;
     }
 
@@ -36,6 +36,7 @@ class Product
             'description' => $data['description'],
             'image' => $data['image'],
             'price' => $data['price'],
+            'stock_price' => $data['stock_price'],
             'status' => $data['status']
         ]);
 
@@ -58,7 +59,7 @@ class Product
 
     public function show($id)
     {
-        $sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.status, GROUP_CONCAT(DISTINCT c.id, c.name SEPARATOR ',') AS categories, GROUP_CONCAT(DISTINCT s.id, s.name SEPARATOR ',') AS subcategories FROM products p LEFT JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id LEFT JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.id = $id GROUP BY p.id";
+        $sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.stock_price, p.status, GROUP_CONCAT(DISTINCT c.id, c.name SEPARATOR ',') AS categories, GROUP_CONCAT(DISTINCT s.id, s.name SEPARATOR ',') AS subcategories FROM products p LEFT JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id LEFT JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.id = $id GROUP BY p.id";
 
         return DB::select(DB::raw($sql));
     }
@@ -70,6 +71,7 @@ class Product
             'description' => $data['description'],
             'image' => $data['image'],
             'price' => $data['price'],
+            'stock_price' => $data['stock_price'],
             'status' => $data['status']
         ));
 
@@ -136,9 +138,9 @@ class Product
 
         $offset = ($current_page * $per_page) - $per_page;
         $current_url = url()->current();
+        
         $products = new LengthAwarePaginator(array_slice($products, $offset, $per_page, true), count($products), $per_page, $current_page, ['path' => $current_url]);
 
-        // dd(url()->current());
         return $products;
     }
 }

@@ -28,6 +28,7 @@ class Subcategory
     			'category_id' => $category,
     			'subcategory_id' => $subcategory_id
     		]);
+            
             $result;
     	}
 

@@ -53,6 +53,12 @@
                         </div>
 
                         <div class="form-group">
+                            <div class="col-md-10">
+                                <input type="number" step="any" name="stock_price" value="{{ $prod->stock_price }}" class="form-control" placeholder="stock price">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <div class="col-sm-10">
                                 <select name="category[]" class="js-example-basic-multiple col-md-8" multiple="multiple">
                                     <?php $cats = explode(',', $prod->categories); ?>

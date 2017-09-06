@@ -44,6 +44,12 @@
                                         </div>
 
                                         <div class="form-group">
+                                            <div class="col-md-10">
+                                                <input type="number" step="any" name="stock_price" value="{{ old('stock_price') }}" class="form-control" placeholder="stock price">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
                                             <div class="col-sm-10">
                                                 <select name="category[]" class="js-example-basic-multiple col-md-8" multiple="multiple">
                                                         @foreach($categories as $category)
@@ -91,14 +97,15 @@
           <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Product</th>
-                    <th>Description</th>
-                    <th>Photo</th>
-                    <th>Price</th>
-                    <th>Category</th>
-                    <th>Subcategory</th>
-                    <th>Status</th>
-                    <th style="min-width: 80px;">Action</th>
+                    <th>Продукт</th>
+                    <th>Описание</th>
+                    <th>Фото</th>
+                    <th>Цена</th>
+                    <th>Акционная цена</th>
+                    <th>Категория</th>
+                    <th>Подкатегория</th>
+                    <th>Статус</th>
+                    <th style="min-width: 80px;">Действие</th>
                 </tr>
             </thead>
             <tbody>
@@ -108,6 +115,7 @@
                     <td>{{ $product->description }}</td>
                     <td><img src="{{ $product->image }}" class="img-rounded" alt="Cinque Terre" width="304" height="236"></td>
                     <td>{{ $product->price }}</td>
+                    <td>{{ $product->stock_price }}</td>
                     <td>
                         <?php
                             // $category_name = '';

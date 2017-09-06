@@ -12,12 +12,11 @@ class OrderController extends Controller
     public function create(Request $request, Order $order)
     {
     	
-    	$user_id = Auth::user()->id;
-    	$products_id = Session::get('products');
-    	dd($request['count']);
+        $user_id = Auth::user()->id;
+        $products_id = Session::get('products');
 
-    	$order_result = $order->create($user_id, $products_id);
-    	$order_info = $order->get_info($user_id, $products_id);
+        $order_result = $order->create($user_id, $products_id, $request['count']);
+        $order_info = $order->get_info($user_id, $products_id);
     	// Тут отправка инфы на почту
 
 
@@ -25,6 +24,7 @@ class OrderController extends Controller
     	$response = [];
 
     	if ($order && $order_info) {
+            Session::forget('products');
     		$response['status'] = 'success';
     		$response['message'] = 'Заказ оформлен';
 

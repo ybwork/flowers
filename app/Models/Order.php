@@ -5,12 +5,13 @@ use DB;
 
 class Order
 {
-    public function create($user_id, $products_id)
+    public function create($user_id, $products_id, $count)
     {
-    	foreach ($products_id as $product_id) {
+    	foreach ($products_id as $key => $product_id) {
     		$order = DB::table('users_orders')->insert(array(
     			'user_id' => $user_id,
-    			'product_id' => $product_id
+    			'product_id' => $product_id,
+                'count' => $count[$key]
     		));
     	}
 
@@ -22,7 +23,8 @@ class Order
     	$orders_info = [];
 
     	foreach ($products_id as $product_id) {
-    		$sql = "SELECT u.id, u.name, u.phone, GROUP_CONCAT(DISTINCT p.name, p.price SEPARATOR ', ') AS products FROM users u JOIN products p ON p.id = $product_id WHERE u.id = $user_id GROUP BY u.id";
+            // $sql = "SELECT u.id, u.name, u.phone, GROUP_CONCAT(DISTINCT p.name, p.price SEPARATOR ', ') AS products FROM users u JOIN products p ON p.id = $product_id WHERE u.id = $user_id GROUP BY u.id";
+    		$sql = "SELECT u.id, u.name, u.phone, u_o.count, GROUP_CONCAT(DISTINCT p.name, p.price SEPARATOR ', ') AS products FROM users_orders u_o JOIN users u ON u.id = $user_id JOIN products p ON p.id = $product_id GROUP BY u_o.count";
 
     		$orders = DB::select(DB::raw($sql));
 
@@ -30,7 +32,7 @@ class Order
     			array_push($orders_info, $order);
     		}
     	}
-    	// dd($orders_info);
+        
     	return $orders_info;
     }
 }

@@ -9,9 +9,10 @@ class AdminAuthMiddleware
 {
     public function handle($request, Closure $next)
     {
+    	
         if (!Auth::check()) {
             return redirect()->route('login');
-        } elseif (Auth::user()->id != 1) {
+        } elseif (Auth::user()->role != 1) {
             return abort(404);
         }
 
