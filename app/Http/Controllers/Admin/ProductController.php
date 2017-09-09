@@ -46,8 +46,10 @@ class ProductController extends Controller
             'status' => 'required',
         ]);
 
-        $image_name = $request->file('image')->getClientOriginalName();
+        $image_type = substr($request->file('image')->getMimeType(), strpos($request->file('image')->getMimeType(), '/') + 1);
+        $image_name = uniqid() . ".$image_type";
         $image_path = '/img/products/' . $image_name;
+        // dd($image_path);
 
         $data = [];
         $data['name'] = $request['name'];
@@ -59,16 +61,17 @@ class ProductController extends Controller
         $data['subcategory'] = $request['subcategory'];
         $data['status'] = $request['status'];
 
-        // dd($image_name);
         $image_content = File::get($request->file('image'));
+        
+        Storage::disk('local')->put($image_name, $image_content);
 
-        if (Storage::exists($image_name)) {
-            return redirect()
-                        ->back()
-                        ->with('message', 'Файл с этим именем уже существует');
-        } else {
-            Storage::disk('local')->put($image_name, $image_content);
-        }
+        // if (Storage::exists($image_name)) {
+        //     return redirect()
+        //                 ->back()
+        //                 ->with('message', 'Файл с этим именем уже существует');
+        // } else {
+        //     Storage::disk('local')->put($image_name, $image_content);
+        // }
 
         $this->product->create($data);
 
@@ -102,7 +105,9 @@ class ProductController extends Controller
         ]);
 
         if ($request->file('image')) {
-            $image_name = $request->file('image')->getClientOriginalName();
+            // $image_name = $request->file('image')->getClientOriginalName();
+            $image_type = substr($request->file('image')->getMimeType(), strpos($request->file('image')->getMimeType(), '/') + 1);
+            $image_name = uniqid() . ".$image_type";
             // dd($image_name);
             $image_content = File::get($request->file('image'));
         } else {
