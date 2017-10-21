@@ -16,64 +16,90 @@ class Subcategory
         return $subcat_cats;
     }
 
-    public function create($name, $categories)
+    public function create(string $name, array $categories)
     {
-    	$subcategory_id = DB::table('subcategories')->insertGetId([
-    		'name' => $name
-    	]);
+        DB::beginTransaction();
 
-        $result = 0;
-    	foreach ($categories as $category) {
-    		DB::table('categories_subcategories')->insert([
-    			'category_id' => $category,
-    			'subcategory_id' => $subcategory_id
-    		]);
-            
-            $result;
-    	}
+        try {
+            $subcategory_id = DB::table('subcategories')->insertGetId([
+                'name' => $name
+            ]);
 
-    	return $result;
+            $categories_subcategories = [];
+
+            $i = 0;
+            foreach ($categories as $cat) {
+                $categories_subcategories[$i]['category_id'] = (int) $cat;
+                $categories_subcategories[$i]['subcategory_id'] = $subcategory_id;
+
+                $i++;
+            }
+
+            DB::table('categories_subcategories')->insert($categories_subcategories);
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+
+        DB::commit();
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         $sql = "SELECT sub.id, sub.name, GROUP_CONCAT(DISTINCT cat.id, cat.name  SEPARATOR ', ') AS categories FROM subcategories sub LEFT JOIN categories_subcategories cat_sub ON sub.id = cat_sub.subcategory_id LEFT JOIN categories cat ON cat_sub.category_id = cat.id WHERE sub.id = $id GROUP BY sub.id";
 
-        $subcategory = DB::select(DB::raw($sql));
-
-        return $subcategory;
+        return DB::select(DB::raw($sql));
     }
 
-    public function update($id, $name, $categories)
+    public function update(int $id, string $name, array $categories)
     {
-        DB::table('subcategories')->where('id', $id)->update([
-            'name' => $name,
-        ]);
+        DB::beginTransaction();
 
-        DB::table('categories_subcategories')->where('subcategory_id', $id)->delete();
-
-        $result = 0;
-        foreach ($categories as $category) {
-            DB::table('categories_subcategories')->insert([
-                'category_id' => $category,
-                'subcategory_id' => $id,
+        try {
+            DB::table('subcategories')->where('id', $id)->update([
+                'name' => $name,
             ]);
-            $result++;
+
+            DB::table('categories_subcategories')->where('subcategory_id', $id)->delete();
+
+            $categories_subcategories = [];
+
+            $i = 0;
+            foreach ($categories as $cat) {
+                $categories_subcategories[$i]['category_id'] = (int) $cat;
+                $categories_subcategories[$i]['subcategory_id'] = $id;
+
+                $i++;
+            }
+
+            DB::table('categories_subcategories')->insert($categories_subcategories);
+        } catch (Exception $e) {
+            DB::rollBack();
         }
 
-        return $result;
+        DB::commit();
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
-        DB::table('subcategories')->where('id', $id)->delete();
+        /*
+            Use this construction because if not exists this subcategories in table products_categories_subcategories then query return 0 and construction DB::transaction(function(){}) not work. 
+        */
+        DB::beginTransaction();
 
-        DB::table('categories_subcategories')->where('subcategory_id', $id)->delete();
+        try {
+            DB::table('subcategories')->where('id', $id)->delete();
 
-        DB::table('products_categories_subcategories')
-                        ->where('subcategory_id', $id)
-                        ->update(array(
-                            'subcategory_id' => NULL,
-                        ));
+            DB::table('categories_subcategories')->where('subcategory_id', $id)->delete();  
+
+            DB::table('products_categories_subcategories')
+                ->where('subcategory_id', $id)
+                ->update(array(
+                    'subcategory_id' => NULL,
+                ));
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+
+        DB::commit();
     }
 }

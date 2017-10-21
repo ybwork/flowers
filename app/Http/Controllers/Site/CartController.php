@@ -11,9 +11,8 @@ class CartController extends Controller
 {
 	public function index()
 	{
-		// Session::forget('products');
 		$cart = Session::get('products');
-		// dd($cart);
+
 		$products = collect([]);
 
 		$subtotal = 0;

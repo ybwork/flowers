@@ -12,7 +12,6 @@ class CategoryController extends Controller
     public function show_cats_subcats($id, $subcat_id=NULL, Product $product, CartController $cart)
     {
         $products = $product->show_by_cats_subcats($id, $subcat_id);
-        // dd($products);
         $cart = $cart->show_products();
         
         return view('site.category', [

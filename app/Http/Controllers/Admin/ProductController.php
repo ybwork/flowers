@@ -24,10 +24,10 @@ class ProductController extends Controller
 
     public function index()
     {
-		$categories = $this->categories->get_categories();
-		$subcategories = $this->subcategories->get_subcategories();
-		$products = $this->product->get_products();
-        // dd($products);
+        $categories = $this->categories->get_categories();
+        $subcategories = $this->subcategories->get_subcategories();
+        $products = $this->product->get_products();
+
     	return view('admin.product', [
     		'categories' => $categories,
     		'subcategories' => $subcategories,
@@ -49,7 +49,9 @@ class ProductController extends Controller
         $image_type = substr($request->file('image')->getMimeType(), strpos($request->file('image')->getMimeType(), '/') + 1);
         $image_name = uniqid() . ".$image_type";
         $image_path = '/img/products/' . $image_name;
-        // dd($image_path);
+
+        $image_content = File::get($request->file('image'));
+        Storage::disk('local')->put($image_name, $image_content);
 
         $data = [];
         $data['name'] = $request['name'];
@@ -61,18 +63,6 @@ class ProductController extends Controller
         $data['subcategory'] = $request['subcategory'];
         $data['status'] = $request['status'];
 
-        $image_content = File::get($request->file('image'));
-        
-        Storage::disk('local')->put($image_name, $image_content);
-
-        // if (Storage::exists($image_name)) {
-        //     return redirect()
-        //                 ->back()
-        //                 ->with('message', 'Файл с этим именем уже существует');
-        // } else {
-        //     Storage::disk('local')->put($image_name, $image_content);
-        // }
-
         $this->product->create($data);
 
         return redirect()->back()->with('message', 'Товар создан!');
@@ -82,8 +72,10 @@ class ProductController extends Controller
     {
         $categories = $this->categories->get_categories();                              
         $subcategories = $this->subcategories->get_subcategories();
+
+        $product_id = (int) $id;
         $product = $this->product->show($id);
-        // dd($product);
+
         return view('admin.product_edit', [
             'categories' => $categories, 
             'subcategories' => $subcategories,
@@ -93,22 +85,19 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        // dd($request);
-        // 'image' => 'required|image|max:200|unique:products,image',
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'image' => 'image|max:200|unique:products,image',
+            // 'image' => 'image|max:200|unique:products,image',
+            'image' => 'images|unique:products,image',
             'price' => 'required',
             'category' => 'required',
             'status' => 'required'
         ]);
 
         if ($request->file('image')) {
-            // $image_name = $request->file('image')->getClientOriginalName();
             $image_type = substr($request->file('image')->getMimeType(), strpos($request->file('image')->getMimeType(), '/') + 1);
             $image_name = uniqid() . ".$image_type";
-            // dd($image_name);
             $image_content = File::get($request->file('image'));
         } else {
             $image_name = '';
@@ -116,37 +105,6 @@ class ProductController extends Controller
 
         $old_image_path = explode('/', $request['old_image_path']);
         $old_image = array_pop($old_image_path);
-        // dd($old_image);
-        
-        // $image_name = $request->file('image')->getClientOriginalName();
-        // $image_content = File::get($request->file('image'));
-
-        // $old_image_path = explode('/', $request['old_image_path']);
-        // $old_image = array_pop($old_image_path);
-
-        // if ($image_name == $old_image) {
-        //     goto end;
-        // } elseif (!Storage::exists($image_name)) {
-        //     Storage::delete($old_image);
-        //     Storage::disk('local')->put($image_name, $image_content);
-        // } else {
-        //     return redirect()
-        //                 ->back()
-        //                 ->with('message', 'Файл с этим именем уже существует');
-        // }
-
-        // end:
-
-        // $data = [];
-        // $data['id'] = $request['id'];
-        // $data['name'] = $request['name'];
-        // $data['description'] = $request['description'];
-        // $data['image'] = '/img/products/' . $image_name;
-        // $data['price'] = $request['price'];
-        // $data['category'] = $request['category'];
-        // $data['subcategory'] = $request['subcategory'];
-        // $data['status'] = $request['status'];
-
 
         if (Storage::exists($image_name)) {
             return redirect()
@@ -159,8 +117,9 @@ class ProductController extends Controller
             Storage::disk('local')->put($image_name, $image_content);
         }
 
+        $id = (int) $request['id'];
+
         $data = [];
-        $data['id'] = $request['id'];
         $data['name'] = $request['name'];
         $data['description'] = $request['description'];
         $data['image'] = '/img/products/' . $image_name;
@@ -170,27 +129,27 @@ class ProductController extends Controller
         $data['subcategory'] = $request['subcategory'];
         $data['status'] = $request['status'];
 
-        $this->product->update($data);
+        $this->product->update($id, $data);
 
         return redirect(route('admin_products'))->with('message', 'Продукт обновлен');
     }
 
     public function delete(Request $request, Product $product)
     {
+        $id = (int) $request['id'];
+        $this->product->delete($id);
+
         $image_path = explode('/', $request['image_path']);
         $image = array_pop($image_path);
         Storage::delete($image);
-
-        $id = $request['id'];
-        $this->product->delete($id);
 
         return redirect()->back()->with('message', 'Товар удалён');
     }
 
     public function move(Request $request)
     {
-        $id = $request['id'];
-        $status = $request['status'];
+        $id = (int) $request['id'];
+        $status = (int) $request['status'];
 
         $this->product->move($id, $status);
 

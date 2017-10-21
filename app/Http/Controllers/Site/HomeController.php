@@ -18,7 +18,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -28,10 +28,9 @@ class HomeController extends Controller
      */
     public function index(Product $product, CartController $cart)
     {
-        // dd(Auth::user()->role != 1);
         $products = $product->get_products();
-        // dd($products);
         $cart = $cart->show_products();
+
         return view('site.home', [
             'products' => $products,
             'cart' => $cart

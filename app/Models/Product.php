@@ -29,80 +29,125 @@ class Product
     	return $products;
     }
 
-    public function create($data)
+    public function create_array_prods_cats_subcats(int $product_id, array $categories, $subcategories): array
     {
-        $product_id = DB::table('products')->insertGetId([
-            'name' => $data['name'],
-            'description' => $data['description'],
-            'image' => $data['image'],
-            'price' => $data['price'],
-            'stock_price' => $data['stock_price'],
-            'status' => $data['status']
-        ]);
+        $products_categories_subcategories = [];
 
-        foreach ($data['category'] as $category_id) {
-            if (isset($data['subcategory'])) {            
-                foreach ($data['subcategory'] as $subcategory) {
-                    $subcategory_id =  $subcategory;
-                }  
+        $i = 0;
+        foreach ($categories as $category) {
+            if (count($categories) == 1) {
+                if (isset($subcategories)) {
+                    foreach ($subcategories as $subcategory) {
+                        $products_categories_subcategories[$i]['product_id'] = $product_id;
+                        $products_categories_subcategories[$i]['category_id'] = $category;
+                        $products_categories_subcategories[$i]['subcategory_id'] = $subcategory;
+
+                        $i++;
+                    }  
+                } else {
+                    $products_categories_subcategories[$i]['product_id'] = $product_id;
+                    $products_categories_subcategories[$i]['category_id'] = $category;
+                    $products_categories_subcategories[$i]['subcategory_id'] = $subcategories;
+                }
             } else {
-                $subcategory_id = $data['subcategory'];
-            }
+                if (isset($subcategories)) {
+                    foreach ($subcategories as $subcategory) {
+                        $products_categories_subcategories[$i]['product_id'] = $product_id;
+                        $products_categories_subcategories[$i]['category_id'] = $category;
+                        $products_categories_subcategories[$i]['subcategory_id'] = $subcategory;
 
-            DB::table('products_categories_subcategories')->insert([
-                'product_id' => $product_id,
-                'category_id' => $category_id,
-                'subcategory_id' => $subcategory_id,
-            ]);
+                        $i++;
+                    }  
+                } else {
+                    $products_categories_subcategories[$i]['product_id'] = $product_id;
+                    $products_categories_subcategories[$i]['category_id'] = $category;
+                    $products_categories_subcategories[$i]['subcategory_id'] = $subcategories;
+
+                    $i++;
+                }
+            }
         }
+
+        return $products_categories_subcategories; 
     }
 
-    public function show($id)
+    public function create(array $data)
+    {
+        DB::beginTransaction();
+
+        try {
+            $product_id = DB::table('products')->insertGetId([
+                'name' => $data['name'],
+                'description' => $data['description'],
+                'image' => $data['image'],
+                'price' => $data['price'],
+                'stock_price' => $data['stock_price'],
+                'status' => $data['status']
+            ]);
+
+            $products_categories_subcategories = $this->create_array_prods_cats_subcats($product_id, $data['category'], $data['subcategory']);
+
+            DB::table('products_categories_subcategories')->insert($products_categories_subcategories);
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+
+        DB::commit();
+    }
+
+    public function show(int $id)
     {
         $sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.stock_price, p.status, GROUP_CONCAT(DISTINCT c.id, c.name SEPARATOR ',') AS categories, GROUP_CONCAT(DISTINCT s.id, s.name SEPARATOR ',') AS subcategories FROM products p LEFT JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id LEFT JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.id = $id GROUP BY p.id";
 
         return DB::select(DB::raw($sql));
     }
 
-    public function update($data)
+    public function update(int $id, array $data)
     {
-        DB::table('products')->where('id', $data['id'])->update(array(
-            'name' => $data['name'],
-            'description' => $data['description'],
-            'image' => $data['image'],
-            'price' => $data['price'],
-            'stock_price' => $data['stock_price'],
-            'status' => $data['status']
-        ));
+        DB::beginTransaction();
 
-        DB::table('products_categories_subcategories')->where('product_id', $data['id'])->delete();
+        try {        
+            DB::table('products')->where('id', $id)->update(array(
+                'name' => $data['name'],
+                'description' => $data['description'],
+                'image' => $data['image'],
+                'price' => $data['price'],
+                'stock_price' => $data['stock_price'],
+                'status' => $data['status']
+            ));
 
-        foreach ($data['category'] as $category_id) {
-            if (isset($data['subcategory'])) {         
-                foreach ($data['subcategory'] as $subcategory_id) {
-                    DB::table('products_categories_subcategories')->insert([
-                        'product_id' => $data['id'],
-                        'category_id' => $category_id,
-                        'subcategory_id' => $subcategory_id,
-                    ]);
-                }  
-            } else {
-                DB::table('products_categories_subcategories')->insert([
-                    'product_id' => $data['id'],
-                    'category_id' => $category_id,
-                    'subcategory_id' => NULL,
-                ]);
-            }
+            DB::table('products_categories_subcategories')->where('product_id', $id)->delete();
+
+            $products_categories_subcategories = $this->create_array_prods_cats_subcats($id, $data['category'], $data['subcategory']);
+
+            DB::table('products_categories_subcategories')->insert($products_categories_subcategories);
+        } catch (Exception $e) {
+            DB::rollBack();
         }
+
+        DB::commit();
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
-        DB::table('products')->where('id', $id)->delete();
-        DB::table('products_categories_subcategories')->where('product_id', $id)->delete();
+        DB::beginTransaction();
+
+        try {            
+            DB::table('products')
+                ->where('id', $id)
+                ->delete();
+
+            DB::table('products_categories_subcategories')
+                ->where('product_id', $id)
+                ->delete();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+
+        DB::commit();
     }
 
-    public function move($id, $status)
+    public function move(int $id, int $status)
     {
         DB::table('products')->where('id', $id)->update(array(
             'status' => $status

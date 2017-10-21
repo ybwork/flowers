@@ -5,25 +5,28 @@ use DB;
 
 class Order
 {
-    public function create($user_id, $products_id, $count)
+    public function create(int $user_id, array $products_ids, array $count)
     {
-    	foreach ($products_id as $key => $product_id) {
-    		$order = DB::table('users_orders')->insert(array(
-    			'user_id' => $user_id,
-    			'product_id' => $product_id,
-                'count' => $count[$key]
-    		));
-    	}
 
-    	return $order;
+        $user_product_count = [];
+
+        $i = 0;
+        foreach ($products_ids as $key => $product_id) {
+            $user_product_count[$i]['user_id'] = $user_id;
+            $user_product_count[$i]['product_id'] = $product_id;
+            $user_product_count[$i]['count'] = $count[$key];
+
+            $i++;
+        }
+
+        return DB::table('users_orders')->insert($user_product_count);
     }
 
-    public function get_info($user_id, $products_id)
+    public function get_info(int $user_id, array $products_ids)
     {
     	$orders_info = [];
 
-    	foreach ($products_id as $product_id) {
-            // $sql = "SELECT u.id, u.name, u.phone, GROUP_CONCAT(DISTINCT p.name, p.price SEPARATOR ', ') AS products FROM users u JOIN products p ON p.id = $product_id WHERE u.id = $user_id GROUP BY u.id";
+    	foreach ($products_ids as $product_id) {
     		$sql = "SELECT u.id, u.name, u.phone, u_o.count, GROUP_CONCAT(DISTINCT p.name, p.price SEPARATOR ', ') AS products FROM users_orders u_o JOIN users u ON u.id = $user_id JOIN products p ON p.id = $product_id GROUP BY u_o.count";
 
     		$orders = DB::select(DB::raw($sql));

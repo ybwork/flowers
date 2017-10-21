@@ -51,30 +51,14 @@ class ProductController extends Controller
         
         $session = Session::all();
 
-        // $arr = [];
-
-        // To be able to remove the element
-        // dd(count($session['products']));
         for ($i = count($session['products']) - 1; $i >= 0; $i--) {
-        // dd($session['products'][$i]);
             if ($session['products'][$i] == $product_id) {
                 unset($session['products'][$i]);
             }   
         }
-        // foreach ($session['products'] as $key => $value) {
-        //     // dd($product_id);
-        //     if ($value == $product_id) {
-        //         unset($session['products'][$key]);
-        //     }
-
-        //     // $arr[$key] = $value;
-        // }
-
-        // $products = array_flip($arr);
-        // unset($products[$product_id]);
 
         $products = $session['products'];
-        // dd($products);
+
         try {
             Session::pull('products');
 
@@ -86,6 +70,7 @@ class ProductController extends Controller
             $response['status'] = 'fail';
             $response['count'] = count(Session::get('products'));
             $response['message'] = 'Что то пошло не так!';
+
             return json_encode($response);          
         }
         
@@ -93,6 +78,7 @@ class ProductController extends Controller
         $response['status'] = 'deleted';
         $response['count'] = count(Session::get('products'));
         $response['message'] = 'Товар удалён из корзины';
+
         return json_encode($response);
     }
 }

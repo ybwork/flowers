@@ -19,8 +19,8 @@ class SubcategoryController extends Controller
     public function index(Category $category)
     {
     	$categories = $category->get_categories();
-    	$subcategories = $this->subcategory->get_subcategories();
-        
+        $subcategories = $this->subcategory->get_subcategories();
+
     	return view('admin.subcategory', [
             'categories' => $categories,
     		'subcategories' => $subcategories,
@@ -34,8 +34,8 @@ class SubcategoryController extends Controller
             'categories' => 'required',
     	]);
 
-        $name = $request['name'];
-    	$categories = $request['categories'];
+        $name = (string) $request['name'];
+    	$categories = (array) $request['categories'];
 
     	$this->subcategory->create($name, $categories);
 
@@ -44,9 +44,11 @@ class SubcategoryController extends Controller
 
     public function edit($id, Category $category)
     {
-        $subcategory = $this->subcategory->show($id);
+        $subcategory_id = (int) $id;
+
+        $subcategory = $this->subcategory->show($subcategory_id);
         $categories = $category->get_categories();
-        // dd($subcategory);
+
         foreach ($subcategory as $subcat) {
             $cats = explode(',', $subcat->categories);
 
@@ -77,27 +79,22 @@ class SubcategoryController extends Controller
             'categories' => 'required',     
         ]);
         
-        $id = $request['id'];
-        $name = $request['name'];
-        $categories = $request['categories'];
+        $id = (int) $request['id'];
+        $name = (string) $request['name'];
+        $categories = (array) $request['categories'];
+      
+        $result = $this->subcategory->update($id, $name, $categories);
 
-        try {        
-            $result = $this->subcategory->update($id, $name, $categories);
-
-            if (!$result) {
-                throw new Exception('Что то пошло не так, попробуйте позже!');
-            } 
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
 
         return redirect(route('admin_subcategories'))->with('message', 'Подкатегория обновлена');
     }
 
     public function delete(Request $request)
     {   
-        $id = $request->id;
+        $id = (int) $request->id;
+
         $this->subcategory->delete($id);
+
         return redirect()->back()->with('message', 'Подкатегория удалена');
     }
 }

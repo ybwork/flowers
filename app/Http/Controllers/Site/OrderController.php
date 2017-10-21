@@ -11,12 +11,14 @@ class OrderController extends Controller
 {
     public function create(Request $request, Order $order)
     {
-    	
         $user_id = Auth::user()->id;
-        $products_id = Session::get('products');
+        $products_ids = Session::get('products');
+        // dd($request['count']);
 
-        $order_result = $order->create($user_id, $products_id, $request['count']);
-        $order_info = $order->get_info($user_id, $products_id);
+        // $order_result = $order->create($user_id, $products_ids, $request['count']);
+        $order_info = $order->get_info($user_id, $products_ids);
+        dd($order_info);
+        // $order_info = true;
     	// Тут отправка инфы на почту
 
 

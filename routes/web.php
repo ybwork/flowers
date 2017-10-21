@@ -102,7 +102,8 @@ Route::get('/', [
 
 Route::get('/cart', [
 	'as' => 'cart',
-	'uses' => 'Site\CartController@index'
+	'uses' => 'Site\CartController@index',
+	'middleware' => 'auth'
 ]);
 
 Route::group(['prefix' => 'product'], function() {
@@ -113,7 +114,8 @@ Route::group(['prefix' => 'product'], function() {
 
 	Route::post('/add-to-cart', [
 		'as' => 'product_add_to_cart',
-		'uses' => 'Site\ProductController@add_to_cart'
+		'uses' => 'Site\ProductController@add_to_cart',
+		'middleware' => 'auth'
 	]);
 
 	Route::delete('/delete-from-cart', [
@@ -129,7 +131,8 @@ Route::get('/category/{id}/{subcat_id?}', [
 
 Route::post('/order/create', [
 	'as' => 'order_create',
-	'uses' => 'Site\OrderController@create'
+	'uses' => 'Site\OrderController@create',
+	'middleware' => 'auth'
 ]);
 
 

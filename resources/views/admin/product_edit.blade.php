@@ -82,7 +82,7 @@
                                     <?php foreach ($subcategories as $subcategory): ?>
                                         <?php $selected = ''; ?>
                                         <?php foreach ($subcats as $subcat): ?>
-                                            <?php if ($subcategory->id == substr($subcat, 0, 1)): ?>
+                                            <?php if ($subcategory->id == (int) filter_var($subcat, FILTER_SANITIZE_NUMBER_INT)): ?>
                                                 <?php $selected = 'selected'; ?>
                                             <?php endif; ?>
                                         <?php endforeach; ?>

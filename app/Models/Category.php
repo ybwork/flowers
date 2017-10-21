@@ -12,7 +12,7 @@ class Category
         return DB::select(DB::raw($sql));
 	}
 
-    public function create($name)
+    public function create(string $name)
     {
     	$result = DB::table('categories')->insert([
 			'name' => $name,
@@ -21,37 +21,25 @@ class Category
     	return $result;
     }
 
-    public function update($id, $name)
+    public function update(int $id, string $name)
     {
     	return DB::table('categories')->where('id', $id)->update(['name' => $name]);
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {  
-        // $category_exists_in_product = DB::table('products_categories_subcategories')
-        //             ->where('category_id', $id)
-        //             ->get();
-                    
-        // $category_is_parent = DB::table('categories_subcategories')
-        //                                     ->where('category_id', $id)
-        //                                     ->get();
+        DB::transaction(function() {
+            DB::table('categories')
+                        ->where('id', $id)
+                        ->delete();
 
-        // if (count($category_exists_in_product) == 0 && count($category_is_parent) == 0) {
-        //     return DB::table('categories')->where('id', $id)->delete();
-        // } else {
-        //     return false;
-        // }
+            DB::table('categories_subcategories')
+                        ->where('category_id', $id)
+                        ->delete();
 
-        DB::table('categories')
-                    ->where('id', $id)
-                    ->delete();
-
-        DB::table('categories_subcategories')
-                    ->where('category_id', $id)
-                    ->delete();
-
-        DB::table('products_categories_subcategories')
-                    ->where('category_id', $id)
-                    ->delete();
+            DB::table('products_categories_subcategories')
+                        ->where('category_id', $id)
+                        ->delete();
+        });
     }
 }

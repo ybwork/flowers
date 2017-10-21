@@ -19,7 +19,6 @@ class CategoryController extends Controller
     public function index()
     {
     	$categories = $this->category->get_categories();
-        // dd($categories);
         
     	return view('admin.category', [
     		'categories' => $categories
@@ -32,7 +31,8 @@ class CategoryController extends Controller
     		'name' => 'required'
     	]);
 
-    	$name = $request['name'];
+    	$name = (string) $request['name'];
+
     	$this->category->create($name);
 
     	return redirect()->back()->with('message', 'Категория добавлена');
@@ -52,8 +52,9 @@ class CategoryController extends Controller
     		'name' => 'required'
     	]);
 
-    	$id = $request['id'];
-    	$name = $request['name'];
+    	$id = (int) $request['id'];
+    	$name = (string) $request['name'];
+        
     	$this->category->update($id, $name);
 
     	return redirect(route('admin_categories'))->with('message', 'Категория обновлена');
@@ -61,15 +62,9 @@ class CategoryController extends Controller
 
     public function delete(Request $request)
     {
-    	$id = $request['id'];
+    	$id = (int) $request['id'];
+
     	$this->category->delete($id);
-        // dd($result);
-        // if ($result) {
-        //     $message = 'Категория удалена';
-        // } else {
-        //     $message = 'Категория не может быть удалена, так как имеет связи с продуктами и подкатегориями';
-        //     $message = 'Что то пошло не так, попробуйте позже';
-        // }
 
     	return redirect(route('admin_categories'))->with('message', 'Категория удалена');
     }
