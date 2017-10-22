@@ -12,19 +12,11 @@ use Auth;
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * Show home page
      *
-     * @return void
-     */
-    public function __construct()
-    {
-        // $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Product $product - model for work with product
+     * @param CartController $cart - controller for work with data cart
+     * @return html view home page
      */
     public function index(Product $product, CartController $cart)
     {

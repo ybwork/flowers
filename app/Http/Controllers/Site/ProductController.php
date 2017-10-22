@@ -10,6 +10,14 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
+    /**
+     * Show category which need edit
+     *
+     * @param CartController $cart - controller for work with cart
+     * @param Product $product - model for work with product
+     * @param $id - unique id product
+     * @return html view product
+    */
     public function show(CartController $cart, Product $product, $id)
     {
         $product = $product->show($id);
@@ -21,6 +29,12 @@ class ProductController extends Controller
         ]);
     }
 
+    /**
+     * Adds product to cart
+     *
+     * @param Request $request - object with data from form
+     * @return json response with success or fail
+    */
     public function add_to_cart(Request $request)
     {
         $product_id = $request->input('product_id');
@@ -45,12 +59,19 @@ class ProductController extends Controller
         return json_encode($response);
     }
 
+    /**
+     * Deletes product from cart
+     *
+     * @param Request $request - object with data from form
+     * @return json response with success or fail
+    */
     public function delete_from_cart(Request $request)
     {
         $product_id = $request['product_id'];
         
         $session = Session::all();
 
+        // For delete this product from session
         for ($i = count($session['products']) - 1; $i >= 0; $i--) {
             if ($session['products'][$i] == $product_id) {
                 unset($session['products'][$i]);

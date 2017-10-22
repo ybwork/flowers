@@ -6,11 +6,10 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<div class="panel panel-info">
-
-
-							<form class="order" action="{{ route('order_create') }}" method="POST">
+							<!-- class="order" -->
+							<form  action="{{ route('order_create') }}" method="POST">
 								<input type="hidden" name="_token" value="{{ csrf_token() }}">
-								@foreach($products as $key => $product)
+									@foreach($products as $key => $product)
 										<div class="panel-body">
 											<input class="product-id" type="hidden" name="product_id[]" value="{{ $product->id }}">
 											<div class="row">
@@ -21,10 +20,12 @@
 												</div>
 												<div class="col-xs-6">
 													<div class="col-xs-6 text-right">
-														<h6><strong>{{ $product->price }} руб.</strong></h6>
+														<h6><strong class="product-price">{{ $product->price }}</strong> руб.</h6>
 													</div>
 													<div class="col-xs-4">
-														<input type="number" name="count[]" class="form-control input-sm" value="1">
+														<label class="plus">+</label>
+															<input type="number" name="count[]" class="form-control input-sm quantity-product" value="1">
+														<label class="minus">-</label>
 													</div>
 												</div>
 											</div>
@@ -32,9 +33,9 @@
 												<i class="fa fa-trash-o"></i>
 											</button>
 										</div>
-								@endforeach
+									@endforeach
 								<div class="col-xs-12">
-									<h4><strong>Общая сумма заказа: {{ $subtotal }} руб.</strong></h4>
+									<h4>Общая сумма заказа: <strong class="common-price"> {{ $subtotal }}</strong> руб.</h4>
 								</div>
 								<button type="submit" class="btn btn-success btn-sm col-md-12">Заказать</button>
 							</form>

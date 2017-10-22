@@ -9,6 +9,11 @@ use App\Http\Controllers\Site\CartController;
 
 class CategoryController extends Controller
 {
+	/**
+     * Shows 
+     *
+     * @return html view 
+     */
     public function show_cats_subcats($id, $subcat_id=NULL, Product $product, CartController $cart)
     {
         $products = $product->show_by_cats_subcats($id, $subcat_id);

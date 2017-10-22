@@ -9,6 +9,11 @@ use Illuminate\Routing\UrlGenerator;
 
 class Product
 {
+    /**
+     * Gets all products
+     *
+     * @return object with all products
+    */
     public function get_products()
     {
     	$sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.stock_price, p.status, GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS categories, GROUP_CONCAT(DISTINCT s.name SEPARATOR ', ') AS subcategories FROM products p LEFT JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id LEFT JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.status = 1 GROUP BY p.id ORDER BY p.id DESC";
@@ -29,6 +34,14 @@ class Product
     	return $products;
     }
 
+    /**
+     * Create array for record relationships prod-cat-subcat
+     *
+     * @param $product_id - unique product id
+     * @param $categories - categories this product
+     * @param $subcategories - subcategories this product
+     * @return array relatioships
+    */
     public function create_array_prods_cats_subcats(int $product_id, array $categories, $subcategories): array
     {
         $products_categories_subcategories = [];
@@ -71,6 +84,12 @@ class Product
         return $products_categories_subcategories; 
     }
 
+    /**
+     * Creates product
+     *
+     * @param $data - array data about product
+     * @return true or false
+    */
     public function create(array $data)
     {
         DB::beginTransaction();
@@ -95,6 +114,12 @@ class Product
         DB::commit();
     }
 
+    /**
+     * Shows product
+     *
+     * @param $id - unique product id
+     * @return data product
+    */
     public function show(int $id)
     {
         $sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.stock_price, p.status, GROUP_CONCAT(DISTINCT c.id, c.name SEPARATOR ',') AS categories, GROUP_CONCAT(DISTINCT s.id, s.name SEPARATOR ',') AS subcategories FROM products p LEFT JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id LEFT JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.id = $id GROUP BY p.id";
@@ -102,6 +127,13 @@ class Product
         return DB::select(DB::raw($sql));
     }
 
+    /**
+     * Updates product
+     *
+     * @param $id - product id
+     * @param $data - array with info about this product
+     * @return true or false
+    */
     public function update(int $id, array $data)
     {
         DB::beginTransaction();
@@ -128,6 +160,12 @@ class Product
         DB::commit();
     }
 
+    /**
+     * Deletes product
+     *
+     * @param $id - product id
+     * @return true or false
+    */
     public function delete(int $id)
     {
         DB::beginTransaction();
@@ -147,6 +185,13 @@ class Product
         DB::commit();
     }
 
+    /**
+     * Changes product status
+     *
+     * @param $id - product id
+     * @param $status - product status
+     * @return true or false
+    */
     public function move(int $id, int $status)
     {
         DB::table('products')->where('id', $id)->update(array(
@@ -154,6 +199,11 @@ class Product
         ));
     }
 
+    /**
+     * Gets all product with status = 0
+     *
+     * @return data products
+    */
     public function show_out_stock()
     {
         $sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.status, GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS categories, GROUP_CONCAT(DISTINCT s.name SEPARATOR ', ') AS subcategories FROM products p INNER JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id INNER JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.status = 0 GROUP BY p.id";
@@ -161,18 +211,21 @@ class Product
         return DB::select(DB::raw($sql));
     }
 
-    public function show_by_cats_subcats($id, $subcat_id=NULL)
+    /**
+     * Shows all product by category and/or subcategory
+     *
+     * @return data products
+    */
+    public function show_by_cats_subcats(int $id, $subcat_id=NULL)
     {
         if ($subcat_id) {
             $sql = "SELECT p_c_s.product_id, p.id, p.name, p.description, p.image, p.price, p.status FROM products_categories_subcategories p_c_s JOIN products p ON p_c_s.product_id = p.id WHERE $id = p_c_s.category_id AND $subcat_id = p_c_s.subcategory_id GROUP BY p_c_s.product_id";
-
-            $products = DB::select(DB::raw($sql));
-
         } else {
             $sql = "SELECT p_c_s.product_id, p.id, p.name, p.description, p.image, p.price, p.status FROM products_categories_subcategories p_c_s JOIN products p ON p_c_s.product_id = p.id WHERE $id = p_c_s.category_id GROUP BY p_c_s.product_id";
 
-            $products = DB::select(DB::raw($sql));          
         }
+
+        $products = DB::select(DB::raw($sql));          
 
         $current_page = 1;
         $per_page = 6;

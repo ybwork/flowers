@@ -53,7 +53,6 @@ $(document).ready(function() {
 
 					$('#count-product').text(response['count']);
 				}
-
 			},
 
 			error: function(e) {
@@ -141,5 +140,32 @@ $(document).ready(function() {
 			},
 		});
 	});
-	
+
+
+	var stepQuantity = 1;
+
+	$(document).on('click', '.plus', function() {
+		var lastQuantity = $(this).closest('.panel-body').find('.quantity-product').val();
+		var newQuantity = parseInt(lastQuantity) + parseInt(stepQuantity);
+		$(this).closest('.panel-body').find('.quantity-product').val(newQuantity);
+
+		var lastCommonPrice = $('.common-price').text();
+		var productPrice = $(this).closest('.panel-body').find('.product-price').text();
+		var newCommonPrice = parseInt(lastCommonPrice) + parseInt(productPrice);
+		$(this).closest('.panel-info').find('.common-price').text(newCommonPrice);
+	});
+
+	$(document).on('click', '.minus', function() {
+		var lastQuantity = $(this).closest('.panel-body').find('.quantity-product').val();
+		var lastCommonPrice = $('.common-price').text();
+
+		if (lastQuantity > 1 && lastCommonPrice > 0) {		
+			var newQuantity = parseInt(lastQuantity) - parseInt(stepQuantity);;
+			$(this).closest('.panel-body').find('.quantity-product').val(newQuantity);
+
+			var productPrice = $(this).closest('.panel-body').find('.product-price').text();
+			var newCommonPrice = parseInt(lastCommonPrice) - parseInt(productPrice);
+			$(this).closest('.panel-info').find('.common-price').text(newCommonPrice);
+		}
+	});
 });

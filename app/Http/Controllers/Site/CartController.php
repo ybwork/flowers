@@ -9,6 +9,11 @@ use Session, DB;
 
 class CartController extends Controller
 {
+	/**
+     * Shows cart with products
+     *
+     * @return html view cart
+    */
 	public function index()
 	{
 		$cart = Session::get('products');
@@ -39,6 +44,11 @@ class CartController extends Controller
 		]);
 	}
 
+	/**
+     * Shows products from cart
+     *
+     * @return array with products
+    */
 	public function show_products()
 	{
 		$cart = [];

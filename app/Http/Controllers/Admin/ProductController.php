@@ -22,6 +22,11 @@ class ProductController extends Controller
         $this->product = $product;
 	}
 
+    /**
+     * Shows home page product
+     *
+     * @return html view home page products
+    */
     public function index()
     {
         $categories = $this->categories->get_categories();
@@ -35,12 +40,18 @@ class ProductController extends Controller
     	]);
     }
 
+    /**
+     * Creates product
+     *
+     * @param Request $request - object with data from form
+     * @return redirect on home page products
+    */
     public function create(Request $request)
     {
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required',
+            'image' => 'required|image|max:200|unique:products,image',
             'price' => 'required',
             'category' => 'required',
             'status' => 'required',
@@ -68,7 +79,13 @@ class ProductController extends Controller
         return redirect()->back()->with('message', 'Товар создан!');
     }
 
-    public function edit(Request $request, $id)
+    /**
+     * Shows data product which need edit
+     *
+     * @param $id - unique id product
+     * @return html view for edit product
+    */
+    public function edit($id)
     {
         $categories = $this->categories->get_categories();                              
         $subcategories = $this->subcategories->get_subcategories();
@@ -83,12 +100,18 @@ class ProductController extends Controller
         ]);
     }
 
-    public function update(Request $request, Product $product)
+    /**
+     * Updates product
+     *
+     * @param Request $request -  object with data from form
+     * @return redirect on home page products
+    */
+    public function update(Request $request)
     {
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            // 'image' => 'image|max:200|unique:products,image',
+            'image' => 'required|image|max:200|unique:products,image',
             'image' => 'images|unique:products,image',
             'price' => 'required',
             'category' => 'required',
@@ -134,7 +157,13 @@ class ProductController extends Controller
         return redirect(route('admin_products'))->with('message', 'Продукт обновлен');
     }
 
-    public function delete(Request $request, Product $product)
+    /**
+     * Delete product
+     *
+     * @param Request $request - object with data from form
+     * @return redirect on home page products
+    */
+    public function delete(Request $request)
     {
         $id = (int) $request['id'];
         $this->product->delete($id);
@@ -146,6 +175,12 @@ class ProductController extends Controller
         return redirect()->back()->with('message', 'Товар удалён');
     }
 
+    /**
+     * Moves product if him ended on stock
+     *
+     * @param Request $request - object with data from form
+     * @return redirect on home page products
+    */
     public function move(Request $request)
     {
         $id = (int) $request['id'];
@@ -156,6 +191,11 @@ class ProductController extends Controller
         return redirect()->back()->with('message', 'Продукт перемещён');
     }
 
+    /**
+     * Shows products which ended on stock 
+     *
+     * @return html view products which ended on stock
+    */
     public function show_out_stock()
     {
         $products = $this->product->show_out_stock();

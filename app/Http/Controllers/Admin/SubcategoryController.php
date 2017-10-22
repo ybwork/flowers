@@ -10,15 +10,22 @@ use App\Models\Category;
 class SubcategoryController extends Controller
 {
     protected $subcategory;
+    protected $category;
 
-    public function __construct(Subcategory $subcategory)
+    public function __construct(Subcategory $subcategory, Category $category)
     {
     	$this->subcategory = $subcategory;
+        $this->category = $category;
     }
 
-    public function index(Category $category)
+    /**
+     * Moves product if him ended on stock
+     *
+     * @return html view home page subcategories
+    */
+    public function index()
     {
-    	$categories = $category->get_categories();
+    	$categories = $this->category->get_categories();
         $subcategories = $this->subcategory->get_subcategories();
 
     	return view('admin.subcategory', [
@@ -27,6 +34,12 @@ class SubcategoryController extends Controller
     	]);
     }
 
+    /**
+     * Creates subcategory
+     *
+     * @param Request $request - object with data from form
+     * @return redirect on home page subcategories
+    */
     public function create(Request $request)
     {
     	$this->validate($request, [
@@ -42,13 +55,20 @@ class SubcategoryController extends Controller
     	return redirect()->back()->with('message', 'Подкатегория добавлена');
     }
 
-    public function edit($id, Category $category)
+    /**
+     * Shows data subcategory
+     *
+     * @param $id - unique id subcategory
+     * @return html view for edit subcategory
+    */
+    public function edit($id)
     {
         $subcategory_id = (int) $id;
 
         $subcategory = $this->subcategory->show($subcategory_id);
-        $categories = $category->get_categories();
+        $categories = $this->category->get_categories();
 
+        // For correct display in selec2.js
         foreach ($subcategory as $subcat) {
             $cats = explode(',', $subcat->categories);
 
@@ -72,6 +92,12 @@ class SubcategoryController extends Controller
         ]);
     }
 
+    /**
+     * Updates subcategory
+     *
+     * @param Request $request - object with data from form
+     * @return redirect on home page subcategories
+    */
     public function update(Request $request)
     {
         $this->validate($request, [
@@ -89,6 +115,12 @@ class SubcategoryController extends Controller
         return redirect(route('admin_subcategories'))->with('message', 'Подкатегория обновлена');
     }
 
+    /**
+     * Updates subcategory
+     *
+     * @param Request $request - object with data from form
+     * @return redirect on home page subcategories
+    */
     public function delete(Request $request)
     {   
         $id = (int) $request->id;

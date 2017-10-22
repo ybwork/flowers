@@ -16,6 +16,11 @@ class CategoryController extends Controller
 		$this->category = $category;
 	}
 
+    /**
+     * Shows page with names exists categories
+     *
+     * @return html view home page categories
+     */
     public function index()
     {
     	$categories = $this->category->get_categories();
@@ -25,6 +30,12 @@ class CategoryController extends Controller
     	]);
     }
 
+    /**
+     * Creates category
+     * 
+     * @param Request $request - object with data from form
+     * @return redirect on home page categories
+     */
     public function create(Request $request)
     {
     	$this->validate($request, [
@@ -38,6 +49,13 @@ class CategoryController extends Controller
     	return redirect()->back()->with('message', 'Категория добавлена');
     }
 
+    /**
+     * Show category which need edit
+     *
+     * @param $id - unique id category
+     * @param $name = category name
+     * @return html view for edit category
+    */
     public function edit($id, $name)
     {
     	return view('admin.category_edit', [
@@ -46,6 +64,12 @@ class CategoryController extends Controller
     	]);
     }
 
+    /**
+     * Updates category
+     *
+     * @param Request $request - object with data from form
+     * @return redirect on home page categories
+    */
     public function update(Request $request)
     {
     	$this->validate($request, [
@@ -60,10 +84,16 @@ class CategoryController extends Controller
     	return redirect(route('admin_categories'))->with('message', 'Категория обновлена');
     }
 
+    /**
+     * Deletes category
+     *
+     * @param Request $request - object with data from form
+     * @return redirect on home page categories
+    */
     public function delete(Request $request)
     {
     	$id = (int) $request['id'];
-
+  
     	$this->category->delete($id);
 
     	return redirect(route('admin_categories'))->with('message', 'Категория удалена');
