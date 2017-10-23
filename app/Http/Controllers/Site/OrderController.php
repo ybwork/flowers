@@ -21,10 +21,10 @@ class OrderController extends Controller
         $user_id = Auth::user()->id;
         $products_ids = Session::get('products');
 
-        // Запись заказа в таблицу orders и users_orders (возвращем id заказа)
-        $order_result = $order->create($user_id, $products_ids, $request['count']);
-        // Берём данные из users_orders по id заказа и цепляем данные о заказе из таблицы orders
-        $order_info = $order->get_info($user_id, $products_ids, $request['count']);
+        // $order_id = $order->create($user_id, $products_ids, $request['count']);
+
+        $order_info = $order->get_info(3);
+        dd($order_info);
 
     	// Тут отправка инфы на почту
 

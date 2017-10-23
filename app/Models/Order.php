@@ -13,19 +13,33 @@ class Order
     */
     public function create(int $user_id, array $products_ids, array $count)
     {
-        $user_product_count = [];
+        DB::beginTransaction();
 
-        // For multiple insert
-        $i = 0;
-        foreach ($products_ids as $key => $product_id) {
-            $user_product_count[$i]['user_id'] = $user_id;
-            $user_product_count[$i]['product_id'] = $product_id;
-            $user_product_count[$i]['count'] = $count[$key];
+        try {
+            $order_id = DB::table('orders')->insertGetId([
+                'user_id' => $user_id
+            ]);
 
-            $i++;
+            $user_product_count = [];
+
+            // For multiple insert
+            $i = 0;
+            foreach ($products_ids as $key => $product_id) {
+                $user_product_count[$i]['order_id'] = (int) $order_id;
+                $user_product_count[$i]['product_id'] = (int) $product_id;
+                $user_product_count[$i]['product_count'] = (int) $count[$key];
+
+                $i++;
+            }
+
+            DB::table('products_orders')->insert($user_product_count);
+        } catch (Exception $e) {
+            DB::rollBack();
         }
 
-        return DB::table('users_orders')->insert($user_product_count);
+        DB::commit();
+
+        return $order_id;
     }
 
     /**
@@ -33,27 +47,23 @@ class Order
      *
      * @return array with order info
     */
-    public function get_info(int $user_id, array $products_ids, array $count)
+    public function get_info(int $order_id)
     {
+        $sql = "SELECT o.id, o.user_id, u.name, u.phone, GROUP_CONCAT(DISTINCT p.name, '-', p.price, '-', p_o.product_count SEPARATOR ', ') AS products FROM orders o JOIN users u ON o.user_id = u.id JOIN products_orders p_o ON p_o.order_id = o.id JOIN products p ON p.id = p_o.product_id WHERE o.id = $order_id";
 
-    	$orders_info = [];
+        $orders = DB::select(DB::raw($sql));
+        dd($orders);
+        $orders_info = [];
 
-        // Using query in foreach because data 
         $i = 0;
-        foreach ($products_ids as $product_id) {
-            $sql = "SELECT u.name, u.phone, p.name AS product_name, p.price AS product_price FROM users u JOIN products p ON p.id = $product_id WHERE u.id = $user_id";
+        foreach ($orders as $key => $order) {
+            $orders_info[$i]['user_name'] = $order->name;
+            $orders_info[$i]['user_phone'] = $order->phone;
+            $orders_info[$i]['product_name'] = $order->product_name;
+            $orders_info[$i]['product_price'] = $order->product_price;
+            $orders_info[$i]['quantity_product'] = $count[$i];
 
-            $orders = DB::select(DB::raw($sql));
-
-            foreach ($orders as $key => $order) {
-                $orders_info[$i]['user_name'] = $order->name;
-                $orders_info[$i]['user_phone'] = $order->phone;
-                $orders_info[$i]['product_name'] = $order->product_name;
-                $orders_info[$i]['product_price'] = $order->product_price;
-                $orders_info[$i]['quantity_product'] = $count[$i];
-
-                $i++;
-            }
+            $i++;
         }
         
     	return $orders_info;
