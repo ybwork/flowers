@@ -21,7 +21,7 @@ class Product
         $products = DB::select(DB::raw($sql));
 
         $current_page = 1;
-        $per_page = 6;
+        $per_page = 3;
 
         if (count($_REQUEST) > 0) {        
             $current_page = $_REQUEST['page'];

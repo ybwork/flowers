@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
 	var _token = $('input[name="_token"]').val();
 
 	function customizeForm(form, action, method, color, text) {
