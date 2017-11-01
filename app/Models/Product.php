@@ -219,16 +219,16 @@ class Product
     public function show_by_cats_subcats(int $id, $subcat_id=NULL)
     {
         if ($subcat_id) {
-            $sql = "SELECT p_c_s.product_id, p.id, p.name, p.description, p.image, p.price, p.status FROM products_categories_subcategories p_c_s JOIN products p ON p_c_s.product_id = p.id WHERE $id = p_c_s.category_id AND $subcat_id = p_c_s.subcategory_id GROUP BY p_c_s.product_id";
+            $sql = "SELECT p_c_s.product_id, p.id, p.name, p.description, p.image, p.price, p.stock_price, p.status FROM products_categories_subcategories p_c_s JOIN products p ON p_c_s.product_id = p.id WHERE $id = p_c_s.category_id AND $subcat_id = p_c_s.subcategory_id GROUP BY p_c_s.product_id";
         } else {
-            $sql = "SELECT p_c_s.product_id, p.id, p.name, p.description, p.image, p.price, p.status FROM products_categories_subcategories p_c_s JOIN products p ON p_c_s.product_id = p.id WHERE $id = p_c_s.category_id GROUP BY p_c_s.product_id";
+            $sql = "SELECT p_c_s.product_id, p.id, p.name, p.description, p.image, p.price, p.stock_price, p.status FROM products_categories_subcategories p_c_s JOIN products p ON p_c_s.product_id = p.id WHERE $id = p_c_s.category_id GROUP BY p_c_s.product_id";
 
         }
 
         $products = DB::select(DB::raw($sql));          
 
         $current_page = 1;
-        $per_page = 6;
+        $per_page = 3;
 
         if (count($_REQUEST) > 0) {
             $current_page = $_REQUEST['page'];

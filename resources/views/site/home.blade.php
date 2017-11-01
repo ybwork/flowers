@@ -7,7 +7,7 @@
 		@foreach($products as $product)
 		    <div>
 		        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
-		            <h3 class="uk-card-title">{{ $product->name }}</h3>
+		            <h3 class="uk-card-title"><a class="uk-link-reset" href="{{ route('show_product', ['id' => $product->id]) }}">{{ $product->name }}</a></h3>
 					<div class="uk-cover-container">
 					    <canvas width="140" height="140"></canvas>
 					    <img src="{{ $product->image }}" alt="" uk-cover>
