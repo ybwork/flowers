@@ -1,75 +1,68 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="wrapper">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card-box">
-	@foreach($errors->all() as $error)
-		<p>{{ $error }}</p>
-	@endforeach
+<div class="uk-container uk-container-expand">
+    <form class="uk-padding" action="{{ route('subcategory_create') }}" method="POST">
+        @if (Session::has('message'))
+            <div class="uk-alert-success" uk-alert>
+                <a class="uk-alert-close" uk-close></a>
+                <p>{{ Session::get('message') }}</p>
+            </div>
+        @endif
 
-	@if(Session::has('message'))
-		<p>{{ Session::get('message') }}</p>
-	@endif
-              
-    <form action="{{ route('subcategory_create') }}" method="POST">
+        @foreach ($errors->all() as $error)
+            <div class="uk-alert-danger" uk-alert>
+                <a class="uk-alert-close" uk-close></a>
+                <p>{{ $error }}</p>
+            </div>
+        @endforeach
+
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <div class="col-lg-2">
-            <select name="categories[]" class="form-control js-example-basic-multiple" multiple="multiple">
-                @foreach($categories as $cat)
-                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        <input type="text" name="name" value="{{ old('name') }}">
-        <button type="submit">Add</button>
+        <fieldset class="uk-fieldset">
+            <div class="uk-margin">
+                <input class="uk-input" type="text" name="name" value="{{ old('name') }}" placeholder="Name">
+            </div>
+            <div class="uk-margin">
+                <select name="categories[]" class="subcat-select js-example-basic-multiple" multiple="multiple">
+                    @foreach($categories as $cat)
+                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </fieldset>
+        <button class="uk-button uk-button-default uk-width-1-1 uk-margin-small-bottom">Add</button>
     </form>
 
-    <div class="row">
-        <div class="col-lg-12">
-            @if(count($subcategories) != 0)
-                <div class="card-box">
-                    <div class="table-responsive">
-                        <table class="table table-actions-bar">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Parent categories</th>
-                                    <th style="min-width: 80px;">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($subcategories as $subcats)
-                                    <tr>
-                                        <td>{{ $subcats->name }}</td>
-                                        <td>
-                                            {{ preg_replace('/[0-9]+/', '', $subcats->categories) }}
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('subcategory_edit', ['id' => $subcats->id]) }}">
-                                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                                            </a>
-                                            <form class="table-action-btn" action="{{ route('subcategory_delete') }}" method="POST">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <input type="hidden" name="id" value="{{ $subcats->id }}">
-                                                <button type="submit" class="fa fa-close del-subcat"></button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            @endif
-        </div>
-    </div>
-</div>
-</div>
-</div>
-</div>
+    @if(count($subcategories) != 0)
+        <table class="uk-table uk-table-hover uk-table-divider">
+            <thead>
+                <tr>
+                    <th>Subcategory</th>
+                    <th>Parent categories</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($subcategories as $subcats)
+                    <tr>
+                        <td>{{ $subcats->name }}</td>
+                        <td>
+                            {{ preg_replace('/[0-9]+/', '', $subcats->categories) }}
+                        </td>
+                        <td>
+                        <a href="{{ route('subcategory_edit', ['id' => $subcats->id]) }}" uk-icon="icon: pencil"></a>
+
+                        <form class="table-action-btn" action="{{ route('subcategory_delete') }}" method="POST">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="id" value="{{ $subcats->id }}">
+                            <button type="submit" uk-icon="icon: trash"></button>
+                        </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
 </div>
 @stop

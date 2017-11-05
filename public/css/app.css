@@ -93,5 +93,15 @@ input[type=file] {
     background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }*/
 
+.subcat-select {
+    width: 100%;
+}
 
+input[type='number'] {
+    -moz-appearance:textfield;
+}
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}

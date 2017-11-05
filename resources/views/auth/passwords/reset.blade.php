@@ -13,15 +13,15 @@
     <form class="uk-form-stacked" action="{{ route('password.request') }}" method="POST">
         {{ csrf_field() }}
         <input type="hidden" name="token" value="{{ $token }}">
-
         <div class="uk-margin">
             <label class="uk-form-label" for="form-stacked-text">Email</label>
             <div class="uk-form-controls">
                 <input class="uk-input" id="form-stacked-text" type="text" name="email" value="{{ $email or old('email') }}">
                 @if ($errors->has('email'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('email') }}</strong>
-                    </span>
+                    <div class="uk-alert-danger" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <p>{{ $errors->first('email') }}</p>
+                    </div>
                 @endif
             </div>
         </div>
@@ -31,9 +31,10 @@
             <div class="uk-form-controls">
                 <input class="uk-input" id="form-stacked-text" type="password" name="password" value="{{ old('password') }}">
                 @if ($errors->has('password'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('password') }}</strong>
-                    </span>
+                    <div class="uk-alert-danger" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <p>{{ $errors->first('password') }}</p>
+                    </div>
                 @endif
             </div>
         </div>
@@ -43,9 +44,10 @@
             <div class="uk-form-controls">
                 <input class="uk-input" id="form-stacked-text" type="password" name="password_confirmation" value="{{ old('password_confirmation') }}">
                 @if ($errors->has('password_confirmation'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                    </span>
+                    <div class="uk-alert-danger" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <p>{{ $errors->first('password_confirmation') }}</p>
+                    </div>
                 @endif
             </div>
         </div>

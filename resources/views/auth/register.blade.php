@@ -10,9 +10,10 @@
             <div class="uk-form-controls">
                 <input class="uk-input" id="form-stacked-text" type="text" name="name" value="{{ old('name') }}">
                 @if ($errors->has('name'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('name') }}</strong>
-                    </span>
+                    <div class="uk-alert-danger" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <p>{{ $errors->first('name') }}</p>
+                    </div>
                 @endif
             </div>
         </div>
@@ -22,9 +23,10 @@
             <div class="uk-form-controls">
                 <input class="uk-input" id="form-stacked-text" type="text" name="phone" value="{{ old('phone') }}">
                 @if ($errors->has('phone'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('phone') }}</strong>
-                    </span>
+                    <div class="uk-alert-danger" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <p>{{ $errors->first('phone') }}</p>
+                    </div>
                 @endif
             </div>
         </div>
@@ -34,9 +36,10 @@
             <div class="uk-form-controls">
                 <input class="uk-input" id="form-stacked-text" type="text" name="email" value="{{ old('email') }}">
                 @if ($errors->has('email'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('email') }}</strong>
-                    </span>
+                    <div class="uk-alert-danger" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <p>{{ $errors->first('email') }}</p>
+                    </div>
                 @endif
             </div>
         </div>
@@ -46,9 +49,10 @@
             <div class="uk-form-controls">
                 <input class="uk-input" id="form-stacked-text" type="password" name="password" value="{{ old('password') }}">
                 @if ($errors->has('password'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('password') }}</strong>
-                    </span>
+                    <div class="uk-alert-danger" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <p>{{ $errors->first('password') }}</p>
+                    </div>
                 @endif
             </div>
         </div>
@@ -58,9 +62,10 @@
             <div class="uk-form-controls">
                 <input class="uk-input" id="form-stacked-text" type="password" name="password_confirmation" value="{{ old('password_confirmation') }}">
                 @if ($errors->has('password_confirmation'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                    </span>
+                    <div class="uk-alert-danger" uk-alert>
+                        <a class="uk-alert-close" uk-close></a>
+                        <p>{{ $errors->first('password_confirmation') }}</p>
+                    </div>
                 @endif
             </div>
         </div>
