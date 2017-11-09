@@ -46,7 +46,7 @@ class CategoryController extends Controller
 
     	$this->category->create($name);
 
-    	return redirect()->back()->with('message', 'Категория добавлена');
+    	return redirect()->back()->with('message', 'Success');
     }
 
     /**
@@ -58,7 +58,7 @@ class CategoryController extends Controller
     */
     public function edit($id, $name)
     {
-    	return view('admin.category_edit', [
+    	return view('admin.category-edit', [
     		'id' => $id,
     		'name' => $name
     	]);
@@ -81,7 +81,7 @@ class CategoryController extends Controller
         
     	$this->category->update($id, $name);
 
-    	return redirect(route('admin_categories'))->with('message', 'Категория обновлена');
+    	return redirect(route('admin_categories'))->with('message', 'Success');
     }
 
     /**
@@ -96,6 +96,6 @@ class CategoryController extends Controller
   
     	$this->category->delete($id);
 
-    	return redirect(route('admin_categories'))->with('message', 'Категория удалена');
+    	return redirect(route('admin_categories'))->with('message', 'Success');
     }
 }

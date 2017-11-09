@@ -76,7 +76,7 @@ class ProductController extends Controller
 
         $this->product->create($data);
 
-        return redirect()->back()->with('message', 'Товар создан!');
+        return redirect()->back()->with('message', 'Success');
     }
 
     /**
@@ -93,7 +93,7 @@ class ProductController extends Controller
         $product_id = (int) $id;
         $product = $this->product->show($id);
 
-        return view('admin.product_edit', [
+        return view('admin.product-edit', [
             'categories' => $categories, 
             'subcategories' => $subcategories,
             'product' => $product, 
@@ -154,7 +154,7 @@ class ProductController extends Controller
 
         $this->product->update($id, $data);
 
-        return redirect(route('admin_products'))->with('message', 'Продукт обновлен');
+        return redirect(route('admin_products'))->with('message', 'Success');
     }
 
     /**
@@ -172,7 +172,7 @@ class ProductController extends Controller
         $image = array_pop($image_path);
         Storage::delete($image);
 
-        return redirect()->back()->with('message', 'Товар удалён');
+        return redirect()->back()->with('message', 'Success');
     }
 
     /**
@@ -188,7 +188,7 @@ class ProductController extends Controller
 
         $this->product->move($id, $status);
 
-        return redirect()->back()->with('message', 'Продукт перемещён');
+        return redirect()->back()->with('message', 'Success');
     }
 
     /**
@@ -200,7 +200,7 @@ class ProductController extends Controller
     {
         $products = $this->product->show_out_stock();
 
-        return view('admin.product_out_stock', [
+        return view('admin.product-out-stock', [
             'products' => $products,
         ]);
     }

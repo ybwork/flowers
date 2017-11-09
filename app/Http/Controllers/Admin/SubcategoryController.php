@@ -52,7 +52,7 @@ class SubcategoryController extends Controller
 
     	$this->subcategory->create($name, $categories);
 
-    	return redirect()->back()->with('message', 'Подкатегория добавлена');
+    	return redirect()->back()->with('message', 'Success');
     }
 
     /**
@@ -86,7 +86,7 @@ class SubcategoryController extends Controller
             $subcat->categories = $arr;
         }
 
-        return view('admin.subcategory_edit', [
+        return view('admin.subcategory-edit', [
             'subcategory' => $subcategory,
             'categories' => $categories,
         ]);
@@ -112,7 +112,7 @@ class SubcategoryController extends Controller
         $result = $this->subcategory->update($id, $name, $categories);
 
 
-        return redirect(route('admin_subcategories'))->with('message', 'Подкатегория обновлена');
+        return redirect(route('admin_subcategories'))->with('message', 'Success');
     }
 
     /**
@@ -127,6 +127,6 @@ class SubcategoryController extends Controller
 
         $this->subcategory->delete($id);
 
-        return redirect()->back()->with('message', 'Подкатегория удалена');
+        return redirect()->back()->with('message', 'Success');
     }
 }

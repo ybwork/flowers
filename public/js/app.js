@@ -4,7 +4,7 @@ $(document).ready(function() {
 	function customizeForm(form, action, method, color, text) {
 		form.attr('action', action);
 		form.find('input[name="_method"]').val(method);
-		form.find('.ajax-button').css('background', color).text(text);
+		form.find('.ajax-button').css('background-color', color).text(text);
 		
 		return true;
 	}
@@ -35,9 +35,9 @@ $(document).ready(function() {
 					customizeForm(
 						form, 
 						'/product/delete-from-cart', 
-						'DELETE', 
-						'red', 
-						'Отказаться'
+						'DELETE',
+						'#34313a', 
+						'Убрать из корзины'
 					);
 
 					$('#count-product').text(response['count']);
@@ -46,8 +46,8 @@ $(document).ready(function() {
 						form, 
 						'/product/add-to-cart', 
 						'POST', 
-						'green', 
-						'Заказать'
+						'#34313a',
+						'Добавить в корзину'
 					);
 
 					$('#count-product').text(response['count']);

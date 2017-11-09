@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Сен 06 2017 г., 20:14
+-- Время создания: Ноя 09 2017 г., 07:20
 -- Версия сервера: 5.7.16
 -- Версия PHP: 7.1.0
 
@@ -31,6 +31,15 @@ CREATE TABLE `categories` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`) VALUES
+(1, 'Roses'),
+(2, 'Tulips'),
+(3, 'Bouquets');
+
 -- --------------------------------------------------------
 
 --
@@ -42,6 +51,16 @@ CREATE TABLE `categories_subcategories` (
   `category_id` int(11) NOT NULL,
   `subcategory_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `categories_subcategories`
+--
+
+INSERT INTO `categories_subcategories` (`id`, `category_id`, `subcategory_id`) VALUES
+(1, 2, 1),
+(2, 1, 1),
+(3, 2, 2),
+(4, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -60,14 +79,27 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(9, '2014_10_12_000000_create_users_table', 1),
-(10, '2014_10_12_100000_create_password_resets_table', 1),
-(11, '2017_05_29_131917_create_products_table', 1),
-(12, '2017_06_18_142922_create_categories_table', 1),
-(13, '2017_06_18_143152_create_subcategories_table', 1),
-(14, '2017_06_18_143820_create_categories_subcategories_table', 1),
-(15, '2017_07_11_035451_create_product_categories_subcategories_table', 1),
-(16, '2017_08_03_040118_create_users_orders_table', 1);
+(36, '2014_10_12_000000_create_users_table', 1),
+(37, '2014_10_12_100000_create_password_resets_table', 1),
+(38, '2017_05_29_131917_create_products_table', 1),
+(39, '2017_06_18_142922_create_categories_table', 1),
+(40, '2017_06_18_143152_create_subcategories_table', 1),
+(41, '2017_06_18_143820_create_categories_subcategories_table', 1),
+(42, '2017_07_11_035451_create_product_categories_subcategories_table', 1),
+(43, '2017_08_03_040118_create_users_orders_table', 1),
+(44, '2017_10_23_171550_create_orders_table', 1),
+(45, '2017_10_23_175221_create_products_orders_table', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -80,6 +112,13 @@ CREATE TABLE `password_resets` (
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `password_resets`
+--
+
+INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
+('test@gmail.com', '$2y$10$fRBJzdpvOYT2GhvJAHIpgOwkWmFvC8rXGXGaCdayNxe/m7o0Vqsui', '2017-10-29 23:57:10');
 
 -- --------------------------------------------------------
 
@@ -97,6 +136,13 @@ CREATE TABLE `products` (
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `description`, `image`, `price`, `stock_price`, `status`) VALUES
+(1, 'A bouquet of Irises', 'The bouquet is composed of 21 Toffee, packaged in a branded Kraft paper and tied with a satin ribbon!', '/img/products/5a03d71ac689d.jpeg', 31.99, NULL, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -110,6 +156,26 @@ CREATE TABLE `products_categories_subcategories` (
   `subcategory_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `products_categories_subcategories`
+--
+
+INSERT INTO `products_categories_subcategories` (`id`, `product_id`, `category_id`, `subcategory_id`) VALUES
+(1, 1, 3, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `products_orders`
+--
+
+CREATE TABLE `products_orders` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `product_count` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -120,6 +186,14 @@ CREATE TABLE `subcategories` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `subcategories`
+--
+
+INSERT INTO `subcategories` (`id`, `name`) VALUES
+(1, 'Red'),
+(2, 'Yellow');
 
 -- --------------------------------------------------------
 
@@ -144,9 +218,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `phone`, `email`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', '89081920644', 'admin@mail.ru', '$2y$10$/r6ecB0LBdZZpJCmwszZSOkUIArb0CYRTCuoKViv3S6CdVyDtajLq', 1, 'eMRLqN06YLvli9kUWOlknTBUPJEDcQfyQOTT0QcYMrg4K2RgVwWy0iLeJmls', '2017-09-06 13:05:52', '2017-09-06 13:05:52'),
-(2, 'u1', '89081920622', 'u1@mail.ru', '$2y$10$TmLfUVMW4B1K1Qd1u/N3OONm.0pY8w2ZKHkUGVvIBnHTSt6d1OVC6', 2, 'CgEkaZMKZkCHnRQPxnBJywbi4AYJIQsHwsrXDGu9klL5LdSG6SGql5urvwHA', '2017-09-06 13:12:42', '2017-09-06 13:12:42'),
-(3, 'u2', '89081920633', 'u2@mail.ru', '$2y$10$WkuruyoHfpHZpCdTX2EwXuEP8VRdnINVw.bZTSYFhzQ5llnBi/Sei', 2, 'zwGUDkNLEGEUENH4LaSSoVRPYQokpE78FxRkE4DRYeuAb8HXZArrz8aOnVpT', '2017-09-06 13:13:11', '2017-09-06 13:13:11');
+(1, 'admin', '89081920622', 'costilek@gmail.com', '$2y$10$q2zQYy7RlHdP0ifztaeVUOtQNKjRZlGuunLntA3I048bqblNBFiFG', 1, 'VHtMVVL9fhNgGtd5D7uY9UAFfyFo2EkZAonnMmclzsXHDcLuUGB11Y9tB9ff', '2017-10-23 13:57:03', '2017-10-23 13:57:03');
 
 -- --------------------------------------------------------
 
@@ -157,8 +229,7 @@ INSERT INTO `users` (`id`, `name`, `phone`, `email`, `password`, `role`, `rememb
 CREATE TABLE `users_orders` (
   `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `count` int(11) NOT NULL
+  `order_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -184,6 +255,12 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `password_resets`
 --
 ALTER TABLE `password_resets`
@@ -199,6 +276,12 @@ ALTER TABLE `products`
 -- Индексы таблицы `products_categories_subcategories`
 --
 ALTER TABLE `products_categories_subcategories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `products_orders`
+--
+ALTER TABLE `products_orders`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -229,37 +312,47 @@ ALTER TABLE `users_orders`
 -- AUTO_INCREMENT для таблицы `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT для таблицы `categories_subcategories`
 --
 ALTER TABLE `categories_subcategories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+--
+-- AUTO_INCREMENT для таблицы `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT для таблицы `products_categories_subcategories`
 --
 ALTER TABLE `products_categories_subcategories`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT для таблицы `products_orders`
+--
+ALTER TABLE `products_orders`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT для таблицы `subcategories`
 --
 ALTER TABLE `subcategories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT для таблицы `users_orders`
 --

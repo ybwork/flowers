@@ -2,11 +2,6 @@
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin_auth'], function() {
 	// Category
-	Route::get('/', [
-		'as' => 'admin_home',
-		'uses' => 'Admin\AdminController@index',
-	]);
-
 	Route::get('categories', [
 		'as' => 'admin_categories',
 		'uses' => 'Admin\CategoryController@index'

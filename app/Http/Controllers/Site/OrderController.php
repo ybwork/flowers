@@ -21,19 +21,15 @@ class OrderController extends Controller
         $user_id = Auth::user()->id;
         $products_ids = Session::get('products');
 
-        // $order_id = $order->create($user_id, $products_ids, $request['count']);
+        $order_id = $order->create($user_id, $products_ids, $request['count']);
 
-        $order_info = $order->get_info(3);
-        dd($order_info);
+        $order_info = $order->get_info($order_id);
 
-    	// Тут отправка инфы на почту
+    	// Как появиться домен тут будет отправка инфы на почту
 
-
-    	// Перед выводом сообщения пользователю проверка на все этапы заказа (создание, вывод инвы, отправка админу)
-    	$response = [];
-
-    	if ($order && $order_info) {
+    	if ($order_id && $order_info) {
             Session::forget('products');
+
     		$response['status'] = 'success';
     		$response['message'] = 'Заказ оформлен';
 

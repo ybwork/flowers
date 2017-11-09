@@ -45,7 +45,7 @@ class ProductController extends Controller
             $response = [];
             $response['status'] = 'fail';
             $response['count'] = count(Session::get('products'));
-            $response['message'] = 'Что то пошло не так!';
+            $response['message'] = 'Something went wrong!';
 
             return json_encode($response);          
         }
@@ -54,7 +54,7 @@ class ProductController extends Controller
         $response['status'] = 'added';
         $response['count'] = count(Session::get('products'));
         $response['product_id'] = $product_id;
-        $response['message'] = 'Товар добавлен в корзину';
+        $response['message'] = 'Success';
         
         return json_encode($response);
     }
@@ -90,7 +90,7 @@ class ProductController extends Controller
             $response = [];
             $response['status'] = 'fail';
             $response['count'] = count(Session::get('products'));
-            $response['message'] = 'Что то пошло не так!';
+            $response['message'] = 'Something went wrong!';
 
             return json_encode($response);          
         }
@@ -98,7 +98,7 @@ class ProductController extends Controller
         $response = [];
         $response['status'] = 'deleted';
         $response['count'] = count(Session::get('products'));
-        $response['message'] = 'Товар удалён из корзины';
+        $response['message'] = 'Success';
 
         return json_encode($response);
     }
