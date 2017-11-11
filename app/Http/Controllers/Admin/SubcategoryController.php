@@ -19,10 +19,10 @@ class SubcategoryController extends Controller
     }
 
     /**
-     * Moves product if him ended on stock
+     * Shows all subcategories and categories
      *
      * @return html view home page subcategories
-    */
+     */
     public function index()
     {
     	$categories = $this->category->get_categories();
@@ -39,7 +39,7 @@ class SubcategoryController extends Controller
      *
      * @param Request $request - object with data from form
      * @return redirect on home page subcategories
-    */
+     */
     public function create(Request $request)
     {
     	$this->validate($request, [
@@ -60,7 +60,7 @@ class SubcategoryController extends Controller
      *
      * @param $id - unique id subcategory
      * @return html view for edit subcategory
-    */
+     */
     public function edit($id)
     {
         $subcategory_id = (int) $id;
@@ -97,7 +97,7 @@ class SubcategoryController extends Controller
      *
      * @param Request $request - object with data from form
      * @return redirect on home page subcategories
-    */
+     */
     public function update(Request $request)
     {
         $this->validate($request, [
@@ -116,11 +116,11 @@ class SubcategoryController extends Controller
     }
 
     /**
-     * Updates subcategory
+     * Deletes subcategory
      *
      * @param Request $request - object with data from form
      * @return redirect on home page subcategories
-    */
+     */
     public function delete(Request $request)
     {   
         $id = (int) $request->id;

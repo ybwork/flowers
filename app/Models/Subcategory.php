@@ -8,10 +8,10 @@ use Illuminate\Pagination\Paginator;
 class Subcategory
 {
     /**
-     * Gets all categories
+     * Gets all subcategories
      *
      * @return data subcategories
-    */
+     */
     public function get_subcategories()
     {
         $sql = "SELECT sub.id, sub.name, GROUP_CONCAT(DISTINCT cat.id, cat.name  SEPARATOR ', ') AS categories FROM subcategories sub LEFT JOIN categories_subcategories cat_sub ON sub.id = cat_sub.subcategory_id LEFT JOIN categories cat ON cat_sub.category_id = cat.id GROUP BY sub.id ORDER BY sub.id DESC";
@@ -27,7 +27,7 @@ class Subcategory
      * @param $name - category name
      * @param $categories - parent categories 
      * @return true or false
-    */
+     */
     public function create(string $name, array $categories)
     {
         DB::beginTransaction();
@@ -60,7 +60,7 @@ class Subcategory
      *
      * @param $id - subcategory id
      * @return data subcategory
-    */
+     */
     public function show(int $id)
     {
         $sql = "SELECT sub.id, sub.name, GROUP_CONCAT(DISTINCT cat.id, cat.name  SEPARATOR ', ') AS categories FROM subcategories sub LEFT JOIN categories_subcategories cat_sub ON sub.id = cat_sub.subcategory_id LEFT JOIN categories cat ON cat_sub.category_id = cat.id WHERE sub.id = $id GROUP BY sub.id";
@@ -75,7 +75,7 @@ class Subcategory
      * @param $name - subcategory name
      * @param $categories - parent categories
      * @return true or false
-    */
+     */
     public function update(int $id, string $name, array $categories)
     {
         DB::beginTransaction();
@@ -110,7 +110,7 @@ class Subcategory
      *
      * @param $id - subcategory id
      * @return true or false
-    */
+     */
     public function delete(int $id)
     {
         DB::beginTransaction();

@@ -25,19 +25,17 @@ class OrderController extends Controller
 
         $order_info = $order->get_info($order_id);
 
-    	// Как появиться домен тут будет отправка инфы на почту
+    	// Когда появиться домен тут будет отправка инфы на почту
 
     	if ($order_id && $order_info) {
             Session::forget('products');
 
     		$response['status'] = 'success';
-    		$response['message'] = 'Заказ оформлен';
 
     		echo json_encode($response);
     	} else {
     		$response['status'] = 'fail';
-    		$response['message'] = 'Что то пошло не так, попробуйте позже';
-
+            
     		echo json_encode($response);
     	}
     }

@@ -17,7 +17,7 @@ class ProductController extends Controller
      * @param Product $product - model for work with product
      * @param $id - unique id product
      * @return html view product
-    */
+     */
     public function show(CartController $cart, Product $product, $id)
     {
         $product = $product->show($id);
@@ -34,7 +34,7 @@ class ProductController extends Controller
      *
      * @param Request $request - object with data from form
      * @return json response with success or fail
-    */
+     */
     public function add_to_cart(Request $request)
     {
         $product_id = $request->input('product_id');
@@ -64,7 +64,7 @@ class ProductController extends Controller
      *
      * @param Request $request - object with data from form
      * @return json response with success or fail
-    */
+     */
     public function delete_from_cart(Request $request)
     {
         $product_id = $request['product_id'];

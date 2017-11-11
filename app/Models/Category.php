@@ -9,7 +9,7 @@ class Category
      * Gets all categories
      *
      * @return data categories
-    */
+     */
 	public function get_categories()
 	{
         $sql = "SELECT c.id, c.name, GROUP_CONCAT(DISTINCT s.id, s.name SEPARATOR ', ') AS subcategories FROM categories c LEFT JOIN categories_subcategories c_s ON c.id = c_s.category_id LEFT JOIN subcategories s ON c_s.subcategory_id = s.id GROUP BY c.id ORDER BY c.id DESC";
@@ -22,7 +22,7 @@ class Category
      *
      * @param $name - category name
      * @return true or false
-    */
+     */
     public function create(string $name)
     {
     	$result = DB::table('categories')->insert([
@@ -38,7 +38,7 @@ class Category
      * @param $id - category id
      * @param $name - category name
      * @return true or false
-    */
+     */
     public function update(int $id, string $name)
     {
     	return DB::table('categories')->where('id', $id)->update(['name' => $name]);
@@ -49,7 +49,7 @@ class Category
      *
      * @param $id - category id
      * @return true or false
-    */
+     */
     public function delete(int $id)
     {  
         DB::beginTransaction();

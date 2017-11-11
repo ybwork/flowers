@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 09 2017 г., 07:20
+-- Время создания: Ноя 11 2017 г., 17:46
 -- Версия сервера: 5.7.16
 -- Версия PHP: 7.1.0
 
@@ -59,8 +59,8 @@ CREATE TABLE `categories_subcategories` (
 INSERT INTO `categories_subcategories` (`id`, `category_id`, `subcategory_id`) VALUES
 (1, 2, 1),
 (2, 1, 1),
-(3, 2, 2),
-(4, 1, 2);
+(5, 2, 2),
+(6, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -141,7 +141,11 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `image`, `price`, `stock_price`, `status`) VALUES
-(1, 'A bouquet of Irises', 'The bouquet is composed of 21 Toffee, packaged in a branded Kraft paper and tied with a satin ribbon!', '/img/products/5a03d71ac689d.jpeg', 31.99, NULL, 1);
+(1, 'A bouquet of Irises', 'The bouquet is composed of 21 Toffee, packaged in a branded Kraft paper and tied with a satin ribbon!', '/img/products/5a06aa1fc7682.jpeg', 31.99, NULL, 1),
+(2, 'Flame joy', 'A volumetric bouquet in stylish kraft packing will please with its simplicity, lightness and sweet aroma!', '/img/products/5a06ab4c77dd8.jpeg', 32.04, NULL, 1),
+(3, 'Red rose', '\"A rose has bloomed, a rose has bloomed, a pure red rose\" ... a rose has bloomed... a pure red rose... a rose has bloomed... a pure red rose...', '/img/products/5a06ad1779a2e.jpeg', 7.30, NULL, 1),
+(4, 'White rose', 'Guests were welcomed by children of plant employees with red, white and blue roses, the colours of the Czech Republic, Japan and Daikin.', '/img/products/5a06ada8326a2.jpeg', 8.20, NULL, 1),
+(5, 'Yellow tulip', 'This knee-length tulip skirt is very special indeed! Attractively slim-cut to accentuate the figure, a front slit ensures easy movement.', '/img/products/5a06af33042b8.jpeg', 3.30, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -161,7 +165,11 @@ CREATE TABLE `products_categories_subcategories` (
 --
 
 INSERT INTO `products_categories_subcategories` (`id`, `product_id`, `category_id`, `subcategory_id`) VALUES
-(1, 1, 3, NULL);
+(2, 1, 3, NULL),
+(3, 2, 3, NULL),
+(5, 4, 1, 3),
+(6, 3, 1, 1),
+(7, 5, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -193,7 +201,8 @@ CREATE TABLE `subcategories` (
 
 INSERT INTO `subcategories` (`id`, `name`) VALUES
 (1, 'Red'),
-(2, 'Yellow');
+(2, 'Yellow'),
+(3, 'White');
 
 -- --------------------------------------------------------
 
@@ -218,19 +227,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `phone`, `email`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', '89081920622', 'costilek@gmail.com', '$2y$10$q2zQYy7RlHdP0ifztaeVUOtQNKjRZlGuunLntA3I048bqblNBFiFG', 1, 'VHtMVVL9fhNgGtd5D7uY9UAFfyFo2EkZAonnMmclzsXHDcLuUGB11Y9tB9ff', '2017-10-23 13:57:03', '2017-10-23 13:57:03');
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `users_orders`
---
-
-CREATE TABLE `users_orders` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `order_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+(1, 'admin', '89081920622', 'costilek@gmail.com', '$2y$10$q2zQYy7RlHdP0ifztaeVUOtQNKjRZlGuunLntA3I048bqblNBFiFG', 1, 'bDTIT5PinGgxy3ClARbbFL5i69xKWPFjoyJMkraMStZ8nSxMm6VF7c8duAjj', '2017-10-23 13:57:03', '2017-10-23 13:57:03'),
+(3, 'test', '55555555555', 'test@gmail.com', '$2y$10$9Z4R0svIfan3DvB06oELuu.zk9pWeXQLXkbj0V6RF414Nvju3qKHy', 2, NULL, '2017-11-11 10:41:14', '2017-11-11 10:41:14');
 
 --
 -- Индексы сохранённых таблиц
@@ -299,12 +297,6 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
--- Индексы таблицы `users_orders`
---
-ALTER TABLE `users_orders`
-  ADD PRIMARY KEY (`id`);
-
---
 -- AUTO_INCREMENT для сохранённых таблиц
 --
 
@@ -312,12 +304,12 @@ ALTER TABLE `users_orders`
 -- AUTO_INCREMENT для таблицы `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT для таблицы `categories_subcategories`
 --
 ALTER TABLE `categories_subcategories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT для таблицы `migrations`
 --
@@ -327,37 +319,32 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 --
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT для таблицы `products_categories_subcategories`
 --
 ALTER TABLE `products_categories_subcategories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT для таблицы `products_orders`
 --
 ALTER TABLE `products_orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 --
 -- AUTO_INCREMENT для таблицы `subcategories`
 --
 ALTER TABLE `subcategories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT для таблицы `users_orders`
---
-ALTER TABLE `users_orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

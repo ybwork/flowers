@@ -26,7 +26,7 @@ class ProductController extends Controller
      * Shows home page product
      *
      * @return html view home page products
-    */
+     */
     public function index()
     {
         $categories = $this->categories->get_categories();
@@ -45,7 +45,7 @@ class ProductController extends Controller
      *
      * @param Request $request - object with data from form
      * @return redirect on home page products
-    */
+     */
     public function create(Request $request)
     {
         $this->validate($request, [
@@ -84,7 +84,7 @@ class ProductController extends Controller
      *
      * @param $id - unique id product
      * @return html view for edit product
-    */
+     */
     public function edit($id)
     {
         $categories = $this->categories->get_categories();                              
@@ -105,14 +105,13 @@ class ProductController extends Controller
      *
      * @param Request $request -  object with data from form
      * @return redirect on home page products
-    */
+     */
     public function update(Request $request)
     {
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'image' => 'required|image|max:200|unique:products,image',
-            'image' => 'images|unique:products,image',
+            'image' => 'image|max:200|unique:products,image',
             'price' => 'required',
             'category' => 'required',
             'status' => 'required'
@@ -142,7 +141,6 @@ class ProductController extends Controller
 
         $id = (int) $request['id'];
 
-        $data = [];
         $data['name'] = $request['name'];
         $data['description'] = $request['description'];
         $data['image'] = '/img/products/' . $image_name;
@@ -162,7 +160,7 @@ class ProductController extends Controller
      *
      * @param Request $request - object with data from form
      * @return redirect on home page products
-    */
+     */
     public function delete(Request $request)
     {
         $id = (int) $request['id'];
@@ -180,7 +178,7 @@ class ProductController extends Controller
      *
      * @param Request $request - object with data from form
      * @return redirect on home page products
-    */
+     */
     public function move(Request $request)
     {
         $id = (int) $request['id'];
@@ -195,7 +193,7 @@ class ProductController extends Controller
      * Shows products which ended on stock 
      *
      * @return html view products which ended on stock
-    */
+     */
     public function show_out_stock()
     {
         $products = $this->product->show_out_stock();

@@ -26,14 +26,14 @@
 								<input type="hidden" name="_method" value="DELETE">
 								<input type="hidden" name="_token" value="{{ csrf_token() }}">
 								<input type="hidden" name="product_id" value="{{ $product->id }}">
-								<button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom ajax-button" type="submit">Убрать из корзины</button>
+								<button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom ajax-button" type="submit">Delete from cart</button>
 							</form>
 						@else
 							<form class="ajax-form" action="{{ route('product_add_to_cart') }}" method="POST">
 								<input type="hidden" name="_method" value="POST">
 								<input type="hidden" name="_token" value="{{ csrf_token() }}">
 								<input type="hidden" name="product_id" value="{{ $product->id }}">
-								<button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom ajax-button" type="submit">Добавить в корзину</button>
+								<button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom ajax-button" type="submit">Add to cart</button>
 							</form>
 						@endif
 			        </div>
@@ -41,8 +41,8 @@
 			@endforeach
 		@endif
 		
-		{{ $products->links() }}
 	</div>
+	{{ $products->links() }}
 </div>
 
 @endsection

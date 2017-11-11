@@ -53,9 +53,9 @@ class CategoryController extends Controller
      * Show category which need edit
      *
      * @param $id - unique id category
-     * @param $name = category name
+     * @param $name - category name
      * @return html view for edit category
-    */
+     */
     public function edit($id, $name)
     {
     	return view('admin.category-edit', [
@@ -69,7 +69,7 @@ class CategoryController extends Controller
      *
      * @param Request $request - object with data from form
      * @return redirect on home page categories
-    */
+     */
     public function update(Request $request)
     {
     	$this->validate($request, [
@@ -89,7 +89,7 @@ class CategoryController extends Controller
      *
      * @param Request $request - object with data from form
      * @return redirect on home page categories
-    */
+     */
     public function delete(Request $request)
     {
     	$id = (int) $request['id'];

@@ -10,9 +10,9 @@ use App\Http\Controllers\Site\CartController;
 class CategoryController extends Controller
 {
 	/**
-     * Shows 
+     * Shows products by categories
      *
-     * @return html view 
+     * @return html view with data
      */
     public function show_cats_subcats($id, $subcat_id=NULL, Product $product, CartController $cart)
     {

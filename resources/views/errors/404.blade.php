@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-	<p>Страница не найдена</p>
+	<div class="uk-margin uk-padding">
+		<div class="uk-alert-primary" uk-alert>
+		    <p>Page not found.</p>
+		</div>
+	</div>
 @endsection

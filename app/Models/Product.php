@@ -13,7 +13,7 @@ class Product
      * Gets all products
      *
      * @return object with all products
-    */
+     */
     public function get_products()
     {
     	$sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.stock_price, p.status, GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS categories, GROUP_CONCAT(DISTINCT s.name SEPARATOR ', ') AS subcategories FROM products p LEFT JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id LEFT JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.status = 1 GROUP BY p.id ORDER BY p.id DESC";
@@ -41,7 +41,7 @@ class Product
      * @param $categories - categories this product
      * @param $subcategories - subcategories this product
      * @return array relatioships
-    */
+     */
     public function create_array_prods_cats_subcats(int $product_id, array $categories, $subcategories): array
     {
         $products_categories_subcategories = [];
@@ -89,7 +89,7 @@ class Product
      *
      * @param $data - array data about product
      * @return true or false
-    */
+     */
     public function create(array $data)
     {
         DB::beginTransaction();
@@ -119,7 +119,7 @@ class Product
      *
      * @param $id - unique product id
      * @return data product
-    */
+     */
     public function show(int $id)
     {
         $sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.stock_price, p.status, GROUP_CONCAT(DISTINCT c.id, c.name SEPARATOR ',') AS categories, GROUP_CONCAT(DISTINCT s.id, s.name SEPARATOR ',') AS subcategories FROM products p LEFT JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id LEFT JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.id = $id GROUP BY p.id";
@@ -133,7 +133,7 @@ class Product
      * @param $id - product id
      * @param $data - array with info about this product
      * @return true or false
-    */
+     */
     public function update(int $id, array $data)
     {
         DB::beginTransaction();
@@ -165,7 +165,7 @@ class Product
      *
      * @param $id - product id
      * @return true or false
-    */
+     */
     public function delete(int $id)
     {
         DB::beginTransaction();
@@ -191,7 +191,7 @@ class Product
      * @param $id - product id
      * @param $status - product status
      * @return true or false
-    */
+     */
     public function move(int $id, int $status)
     {
         DB::table('products')->where('id', $id)->update(array(
@@ -203,7 +203,7 @@ class Product
      * Gets all product with status = 0
      *
      * @return data products
-    */
+     */
     public function show_out_stock()
     {
         $sql = "SELECT p.id, p.name, p.description, p.image, p.price, p.stock_price, p.status, GROUP_CONCAT(DISTINCT c.name SEPARATOR ', ') AS categories, GROUP_CONCAT(DISTINCT s.name SEPARATOR ', ') AS subcategories FROM products p INNER JOIN products_categories_subcategories p_c_s ON p.id = p_c_s.product_id INNER JOIN categories c ON c.id = p_c_s.category_id LEFT JOIN subcategories s ON s.id = p_c_s.subcategory_id WHERE p.status = 0 GROUP BY p.id";
@@ -214,8 +214,10 @@ class Product
     /**
      * Shows all product by category and/or subcategory
      *
+     * @param $id - category id
+     * @param $subcat_id - subcategory id if exists
      * @return data products
-    */
+     */
     public function show_by_cats_subcats(int $id, $subcat_id=NULL)
     {
         if ($subcat_id) {

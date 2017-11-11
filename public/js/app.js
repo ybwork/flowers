@@ -37,7 +37,7 @@ $(document).ready(function() {
 						'/product/delete-from-cart', 
 						'DELETE',
 						'#34313a', 
-						'Убрать из корзины'
+						'Delete from cart'
 					);
 
 					$('#count-product').text(response['count']);
@@ -46,8 +46,8 @@ $(document).ready(function() {
 						form, 
 						'/product/add-to-cart', 
 						'POST', 
-						'#34313a',
-						'Добавить в корзину'
+						'#0f7ae5',
+						'Add to cart'
 					);
 
 					$('#count-product').text(response['count']);
@@ -90,9 +90,14 @@ $(document).ready(function() {
 				var response = $.parseJSON(data);
 
 				if (response['status'] == 'success') {
-					console.log(1);
+					$('.uk-container').find('.uk-alert-success').css('display', 'block');
+
+					setTimeout(function() { 
+						var	url = 'http://' + window.location.host;
+						window.location.href = url;
+					}, 3000);
 				} else {
-					console.log(0);
+					$('.uk-container').find('.uk-alert-danger').css('display', 'block');
 				}
 			},
 
@@ -107,13 +112,14 @@ $(document).ready(function() {
 
 		var	action = 'http://' + window.location.host + '/product/delete-from-cart';
 		var	method = 'DELETE';
-		var product_id = $(this).closest('.panel-body').find('.product-id').val();
+		var productId = $(this).closest('.uk-card-body').find('.product-id').val();
+		var element = ".item-" + productId;
 
 		$.ajax({
 			url: action,
 			type: method,
 			data: {
-				product_id: product_id
+				product_id: productId
 			},
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -123,11 +129,12 @@ $(document).ready(function() {
 				var response = $.parseJSON(data);
 				
 				if (response['status'] == 'deleted') {
-					$('.order').find('.panel-body').eq(0).remove();
-					
-					var panel = $('.order').find('.panel-body');
+					$('.order').find(element).remove();
+					// $('.order').find('.item').eq(0).remove();
+
+					var panel = $('.order').find('.uk-card-body');
 					if (panel.length == 0) {
-						$('.order').remove();
+						$('.uk-container').remove();
 					}
 				}
 
@@ -144,27 +151,27 @@ $(document).ready(function() {
 	var stepQuantity = 1;
 
 	$(document).on('click', '.plus', function() {
-		var lastQuantity = $(this).closest('.panel-body').find('.quantity-product').val();
+		var lastQuantity = $(this).closest('.uk-card-body').find('.quantity-product').val();
 		var newQuantity = parseInt(lastQuantity) + parseInt(stepQuantity);
-		$(this).closest('.panel-body').find('.quantity-product').val(newQuantity);
+		$(this).closest('.uk-card-body').find('.quantity-product').val(newQuantity);
 
 		var lastCommonPrice = $('.common-price').text();
-		var productPrice = $(this).closest('.panel-body').find('.product-price').text();
-		var newCommonPrice = parseInt(lastCommonPrice) + parseInt(productPrice);
-		$(this).closest('.panel-info').find('.common-price').text(newCommonPrice);
+		var productPrice = $(this).closest('.uk-card-body').find('.product-price').text();
+		var newCommonPrice = parseFloat(lastCommonPrice) + parseFloat(productPrice);
+		$(this).closest('.uk-container').find('.common-price').text(newCommonPrice);
 	});
 
 	$(document).on('click', '.minus', function() {
-		var lastQuantity = $(this).closest('.panel-body').find('.quantity-product').val();
+		var lastQuantity = $(this).closest('.uk-card-body').find('.quantity-product').val();
 		var lastCommonPrice = $('.common-price').text();
 
 		if (lastQuantity > 1 && lastCommonPrice > 0) {		
 			var newQuantity = parseInt(lastQuantity) - parseInt(stepQuantity);;
-			$(this).closest('.panel-body').find('.quantity-product').val(newQuantity);
+			$(this).closest('.uk-card-body').find('.quantity-product').val(newQuantity);
 
-			var productPrice = $(this).closest('.panel-body').find('.product-price').text();
-			var newCommonPrice = parseInt(lastCommonPrice) - parseInt(productPrice);
-			$(this).closest('.panel-info').find('.common-price').text(newCommonPrice);
+			var productPrice = $(this).closest('.uk-card-body').find('.product-price').text();
+			var newCommonPrice = parseFloat(lastCommonPrice) - parseFloat(productPrice);
+			$(this).closest('.uk-container').find('.common-price').text(newCommonPrice);
 		}
 	});
 });
