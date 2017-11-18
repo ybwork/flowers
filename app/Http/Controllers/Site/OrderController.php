@@ -10,7 +10,7 @@ use Session, Auth;
 class OrderController extends Controller
 {
     /**
-     * Creates order
+     * Collect data for create order
      * 
      * @param Request $request - object with data from form
      * @param Order $order - model for work with order

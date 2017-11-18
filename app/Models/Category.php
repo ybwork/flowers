@@ -6,9 +6,9 @@ use DB;
 class Category
 {
     /**
-     * Gets all categories
+     * Gets all categories from db
      *
-     * @return data categories
+     * @return array data or http error 500
      */
 	public function get_categories()
 	{
@@ -18,10 +18,10 @@ class Category
 	}
 
     /**
-     * Creates category
+     * Creates category in db
      *
      * @param $name - category name
-     * @return true or false
+     * @return true or page with error 500
      */
     public function create(string $name)
     {
@@ -33,11 +33,11 @@ class Category
     }
 
     /**
-     * Updates category
+     * Updates category in db
      *
      * @param $id - category id
      * @param $name - category name
-     * @return true or false
+     * @return true or page with error 500
      */
     public function update(int $id, string $name)
     {
@@ -45,10 +45,10 @@ class Category
     }
 
     /**
-     * Delete category
+     * Delete category with related data from db
      *
      * @param $id - category id
-     * @return true or false
+     * @return true or page with error 500
      */
     public function delete(int $id)
     {  

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 11 2017 г., 17:46
+-- Время создания: Ноя 15 2017 г., 22:06
 -- Версия сервера: 5.7.16
 -- Версия PHP: 7.1.0
 
@@ -227,8 +227,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `phone`, `email`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', '89081920622', 'costilek@gmail.com', '$2y$10$q2zQYy7RlHdP0ifztaeVUOtQNKjRZlGuunLntA3I048bqblNBFiFG', 1, 'bDTIT5PinGgxy3ClARbbFL5i69xKWPFjoyJMkraMStZ8nSxMm6VF7c8duAjj', '2017-10-23 13:57:03', '2017-10-23 13:57:03'),
-(3, 'test', '55555555555', 'test@gmail.com', '$2y$10$9Z4R0svIfan3DvB06oELuu.zk9pWeXQLXkbj0V6RF414Nvju3qKHy', 2, NULL, '2017-11-11 10:41:14', '2017-11-11 10:41:14');
+(1, 'admin', '11122233345', 'costilek@gmail.com', '$2y$10$q2zQYy7RlHdP0ifztaeVUOtQNKjRZlGuunLntA3I048bqblNBFiFG', 1, 'WUWg10CyoSAgCNH09sAcfaqOTiNMM3oTXIAl33tA7YAphJGUJYcTkscr0Myy', '2017-10-23 13:57:03', '2017-10-23 13:57:03'),
+(5, 'user', '55555555555', 'user@gmail.com', '$2y$10$X/vFMnrtqLnogp1Lg2XsNuOVzjlWE4ARMfWrgmiLCJHtsw/5q3g/K', 2, 'tZaqWSxXkVUR5t1aBnSAxdbcu4vwiUalVwVjmDi9UfjYUpV4l89UDls018br', '2017-11-15 15:04:31', '2017-11-15 15:04:31');
 
 --
 -- Индексы сохранённых таблиц
@@ -304,12 +304,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT для таблицы `categories_subcategories`
 --
 ALTER TABLE `categories_subcategories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT для таблицы `migrations`
 --
@@ -319,32 +319,32 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT для таблицы `products_categories_subcategories`
 --
 ALTER TABLE `products_categories_subcategories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT для таблицы `products_orders`
 --
 ALTER TABLE `products_orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT для таблицы `subcategories`
 --
 ALTER TABLE `subcategories`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

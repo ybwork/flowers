@@ -15,8 +15,8 @@ class ProductController extends Controller
      *
      * @param CartController $cart - controller for work with cart
      * @param Product $product - model for work with product
-     * @param $id - unique id product
-     * @return html view product
+     * @param $id - id product
+     * @return html view
      */
     public function show(CartController $cart, Product $product, $id)
     {

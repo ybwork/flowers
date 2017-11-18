@@ -15,6 +15,9 @@ class ProductController extends Controller
     protected $subcategories;
 	protected $product;
 
+    /**
+     * Sets models
+     */
 	public function __construct(Category $category, Subcategory $subcategory, Product $product)
 	{
 		$this->categories = $category;
@@ -23,9 +26,9 @@ class ProductController extends Controller
 	}
 
     /**
-     * Shows home page product
+     * Shows all products
      *
-     * @return html view home page products
+     * @return html view
      */
     public function index()
     {
@@ -41,8 +44,8 @@ class ProductController extends Controller
     }
 
     /**
-     * Creates product
-     *
+     * Collect data for create product
+     * 
      * @param Request $request - object with data from form
      * @return redirect on home page products
      */
@@ -60,7 +63,6 @@ class ProductController extends Controller
         $image_type = substr($request->file('image')->getMimeType(), strpos($request->file('image')->getMimeType(), '/') + 1);
         $image_name = uniqid() . ".$image_type";
         $image_path = '/img/products/' . $image_name;
-
         $image_content = File::get($request->file('image'));
         Storage::disk('local')->put($image_name, $image_content);
 
@@ -80,10 +82,10 @@ class ProductController extends Controller
     }
 
     /**
-     * Shows data product which need edit
+     * Show product which need edit
      *
-     * @param $id - unique id product
-     * @return html view for edit product
+     * @param $id - id product
+     * @return html view
      */
     public function edit($id)
     {
@@ -101,9 +103,9 @@ class ProductController extends Controller
     }
 
     /**
-     * Updates product
+     * Collect data for update product
      *
-     * @param Request $request -  object with data from form
+     * @param Request $request - object with data from form
      * @return redirect on home page products
      */
     public function update(Request $request)
@@ -156,7 +158,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Delete product
+     * Collect data for delete product
      *
      * @param Request $request - object with data from form
      * @return redirect on home page products

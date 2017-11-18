@@ -12,6 +12,9 @@ class SubcategoryController extends Controller
     protected $subcategory;
     protected $category;
 
+    /**
+     * Sets models
+     */
     public function __construct(Subcategory $subcategory, Category $category)
     {
     	$this->subcategory = $subcategory;
@@ -19,9 +22,9 @@ class SubcategoryController extends Controller
     }
 
     /**
-     * Shows all subcategories and categories
+     * Shows all subcategories
      *
-     * @return html view home page subcategories
+     * @return html view
      */
     public function index()
     {
@@ -35,8 +38,8 @@ class SubcategoryController extends Controller
     }
 
     /**
-     * Creates subcategory
-     *
+     * Collect data for create subcategory
+     * 
      * @param Request $request - object with data from form
      * @return redirect on home page subcategories
      */
@@ -56,10 +59,10 @@ class SubcategoryController extends Controller
     }
 
     /**
-     * Shows data subcategory
+     * Show subcategory which need edit
      *
-     * @param $id - unique id subcategory
-     * @return html view for edit subcategory
+     * @param $id - id subcategory
+     * @return html view
      */
     public function edit($id)
     {
@@ -93,7 +96,7 @@ class SubcategoryController extends Controller
     }
 
     /**
-     * Updates subcategory
+     * Collect data for update subcategory
      *
      * @param Request $request - object with data from form
      * @return redirect on home page subcategories
@@ -116,7 +119,7 @@ class SubcategoryController extends Controller
     }
 
     /**
-     * Deletes subcategory
+     * Collect data for delete subcategory
      *
      * @param Request $request - object with data from form
      * @return redirect on home page subcategories

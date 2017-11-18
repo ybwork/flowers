@@ -8,9 +8,9 @@ use Illuminate\Pagination\Paginator;
 class Subcategory
 {
     /**
-     * Gets all subcategories
+     * Gets all subcategories from db
      *
-     * @return data subcategories
+     * @return array data or http error 500
      */
     public function get_subcategories()
     {
@@ -22,11 +22,11 @@ class Subcategory
     }
 
     /**
-     * Creates subcategory
+     * Creates subcategory in db
      *
      * @param $name - category name
      * @param $categories - parent categories 
-     * @return true or false
+     * @return true or page with error 500
      */
     public function create(string $name, array $categories)
     {
@@ -56,10 +56,10 @@ class Subcategory
     }
 
     /**
-     * Shows subcategory
+     * Gets selected subcategory from db 
      *
      * @param $id - subcategory id
-     * @return data subcategory
+     * @return data subcategory or http error 500
      */
     public function show(int $id)
     {
@@ -69,12 +69,12 @@ class Subcategory
     }
 
     /**
-     * Updates subcategory
+     * Updates subcategory in db
      *
      * @param $id - subcategory id
      * @param $name - subcategory name
      * @param $categories - parent categories
-     * @return true or false
+     * @return true or page with error 500
      */
     public function update(int $id, string $name, array $categories)
     {
@@ -106,10 +106,10 @@ class Subcategory
     }
 
     /**
-     * Delete subcategory
+     * Delete subcategory from db
      *
      * @param $id - subcategory id
-     * @return true or false
+     * @return true or page with error 500
      */
     public function delete(int $id)
     {

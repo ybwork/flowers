@@ -12,7 +12,7 @@ class CartController extends Controller
 	/**
      * Shows cart with products
      *
-     * @return html view cart
+     * @return html view
      */
 	public function index()
 	{

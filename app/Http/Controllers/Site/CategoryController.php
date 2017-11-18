@@ -12,7 +12,11 @@ class CategoryController extends Controller
 	/**
      * Shows products by categories
      *
-     * @return html view with data
+     * @param $id - id category
+     * @param $subcat_id - id subcategory
+     * @param Product $product - model for work with product
+     * @param CartController $cart - controller for work with cart
+     * @return html view
      */
     public function show_cats_subcats($id, $subcat_id=NULL, Product $product, CartController $cart)
     {

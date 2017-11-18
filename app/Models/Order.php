@@ -6,10 +6,12 @@ use DB;
 class Order
 {
     /**
-     * Creates order
+     * Save order with related data in db
      *
-     * @param $name - category name
-     * @return true or false
+     * @param $user_id - user id which did order
+     * @param $products_ids - products which user added to cart
+     * @param $count - count for each product
+     * @return true or page with error 500
      */
     public function create(int $user_id, array $products_ids, array $count)
     {
@@ -45,7 +47,7 @@ class Order
     /**
      * Gets info about user order
      *
-     * @return array with order info
+     * @return array info about order http error 500
      */
     public function get_info(int $order_id)
     {

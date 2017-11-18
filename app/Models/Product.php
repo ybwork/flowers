@@ -10,9 +10,9 @@ use Illuminate\Routing\UrlGenerator;
 class Product
 {
     /**
-     * Gets all products
+     * Gets all categories from db
      *
-     * @return object with all products
+     * @return array data or http error 500
      */
     public function get_products()
     {
@@ -20,6 +20,7 @@ class Product
 
         $products = DB::select(DB::raw($sql));
 
+        // For pagination
         $current_page = 1;
         $per_page = 3;
 
@@ -35,7 +36,7 @@ class Product
     }
 
     /**
-     * Create array for record relationships prod-cat-subcat
+     * Create array for save relationships prod-cat-subcat
      *
      * @param $product_id - unique product id
      * @param $categories - categories this product
@@ -85,10 +86,10 @@ class Product
     }
 
     /**
-     * Creates product
+     * Creates product in db
      *
-     * @param $data - array data about product
-     * @return true or false
+     * @param $data - data with info about product
+     * @return true or page with error 500
      */
     public function create(array $data)
     {
@@ -117,8 +118,8 @@ class Product
     /**
      * Shows product
      *
-     * @param $id - unique product id
-     * @return data product
+     * @param $id - product id
+     * @return data product or http error 500
      */
     public function show(int $id)
     {
@@ -128,11 +129,11 @@ class Product
     }
 
     /**
-     * Updates product
+     * Updates product in db
      *
      * @param $id - product id
-     * @param $data - array with info about this product
-     * @return true or false
+     * @param $data - data with info about product
+     * @return true or page with error 500
      */
     public function update(int $id, array $data)
     {
@@ -161,10 +162,10 @@ class Product
     }
 
     /**
-     * Deletes product
+     * Delete product with related data from db
      *
      * @param $id - product id
-     * @return true or false
+     * @return true or page with error 500
      */
     public function delete(int $id)
     {
@@ -186,11 +187,11 @@ class Product
     }
 
     /**
-     * Changes product status
+     * Changes product status in db
      *
      * @param $id - product id
      * @param $status - product status
-     * @return true or false
+     * @return true or page with error 500
      */
     public function move(int $id, int $status)
     {
@@ -200,9 +201,9 @@ class Product
     }
 
     /**
-     * Gets all product with status = 0
+     * Gets all products with status = 0
      *
-     * @return data products
+     * @return data products or http error 500
      */
     public function show_out_stock()
     {
@@ -212,11 +213,11 @@ class Product
     }
 
     /**
-     * Shows all product by category and/or subcategory
+     * Shows all products by category and/or subcategory
      *
      * @param $id - category id
      * @param $subcat_id - subcategory id if exists
-     * @return data products
+     * @return data products or http error 500
      */
     public function show_by_cats_subcats(int $id, $subcat_id=NULL)
     {

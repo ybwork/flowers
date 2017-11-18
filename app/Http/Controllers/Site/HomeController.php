@@ -12,11 +12,11 @@ use Auth;
 class HomeController extends Controller
 {
     /**
-     * Show home page
+     * Show home page with products
      *
      * @param Product $product - model for work with product
      * @param CartController $cart - controller for work with data cart
-     * @return html view home page
+     * @return html view
      */
     public function index(Product $product, CartController $cart)
     {

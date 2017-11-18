@@ -11,15 +11,18 @@ class CategoryController extends Controller
 {
 	protected $category;
 
+    /**
+     * Sets model
+     */
 	public function __construct(Category $category)
 	{
 		$this->category = $category;
 	}
 
     /**
-     * Shows page with names exists categories
+     * Shows all categories
      *
-     * @return html view home page categories
+     * @return html view
      */
     public function index()
     {
@@ -31,7 +34,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Creates category
+     * Collect data for create category
      * 
      * @param Request $request - object with data from form
      * @return redirect on home page categories
@@ -52,9 +55,9 @@ class CategoryController extends Controller
     /**
      * Show category which need edit
      *
-     * @param $id - unique id category
-     * @param $name - category name
-     * @return html view for edit category
+     * @param $id - id category
+     * @param $name - name category
+     * @return html view
      */
     public function edit($id, $name)
     {
@@ -65,7 +68,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Updates category
+     * Collect data for update category
      *
      * @param Request $request - object with data from form
      * @return redirect on home page categories
@@ -85,7 +88,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Deletes category
+     * Collect data for delete category
      *
      * @param Request $request - object with data from form
      * @return redirect on home page categories
